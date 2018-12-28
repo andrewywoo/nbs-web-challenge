@@ -2,9 +2,10 @@ import React, { Component } from "react";
 import "./App.css";
 import axios from "axios";
 import debounce from "lodash/debounce";
+import BarChart from "./components/BarChart/BarChart";
 
 class App extends Component {
-  state = { artist: "Big Gigantic", artistInfo: null, metrics: null };
+  state = { artist: "", artistInfo: null, metrics: null };
 
   constructor() {
     super();
@@ -12,7 +13,9 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.grabArtistData();
+    if (this.state.artist) {
+      this.grabArtistData();
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -34,18 +37,24 @@ class App extends Component {
       .then(response => {
         if (!response.data.artists.length) return null;
         const artistInfo = response.data.artists[0];
-        console.log("artist", artistInfo);
-        this.setState({ artistInfo: artistInfo });
+        //this.setState({ artistInfo: artistInfo });
         return axios.get(
           `https://api.nextbigsound.com/artists/${
             artistInfo.id
-          }/data?metricIds=28,247&startDate=2017-01-01&endDate=2017-12-31&timeseries=totals,deltas&access_token=8f6f8a9b1b7c83257922892888218aea`
+          }/data?metricIds=28,41,247&startDate=2017-01-01&endDate=2017-12-31&timeseries=totals,deltas&access_token=8f6f8a9b1b7c83257922892888218aea`
         );
       })
       .then(response => {
         if (response) {
           this.setState({ metrics: response.data });
           console.log("metrics", response.data);
+          return axios.get(response.data.artist.self.url);
+        }
+      })
+      .then(response => {
+        if (response) {
+          console.log("artistinfo", response.data);
+          this.setState({ artistInfo: response.data });
         }
       })
       .catch(error => console.log(error));
@@ -59,18 +68,55 @@ class App extends Component {
     this.setState({ artist: val });
   };
 
+  getWikiViewData = () => {
+    const wikiViews = this.state.metrics.data.filter(item => {
+      return item.metricId === 41;
+    });
+    if (wikiViews.length) {
+      const wikiData = wikiViews[0].timeseries.deltas;
+      const data = Object.keys(wikiData).map(keys => {
+        return { date: new Date(keys), value: wikiData[keys] };
+      });
+      return data;
+    }
+  };
+
   render() {
-    let image = this.state.artistInfo ? (
-      <img src={this.state.artistInfo.images[0][220]} alt="Artist" />
-    ) : null;
+    let image, info, genre, barChart;
+
+    if (this.state.artistInfo) {
+      image = <img src={this.state.artistInfo.images[0][220]} alt="Artist" />;
+      info = <h1>Artist Name: {this.state.artistInfo.name}</h1>;
+      genre = <h2>{this.state.artistInfo.genres.join(" ")}</h2>;
+    }
+
+    if (this.state.metrics) {
+      let wikiData = this.getWikiViewData();
+      barChart = (
+        <>
+          <BarChart data={wikiData} />
+          <h1>Wikipedia Views</h1>
+        </>
+      );
+    }
 
     return (
       <>
         <div className="App">
-          <input type="text" onChange={this.handleChange.bind(this)} />
-          {this.state.metrics ? this.state.metrics.artistId : null}
+          <input
+            className="artist-search-input"
+            type="text"
+            onChange={this.handleChange.bind(this)}
+          />
+          <div className="artist-info">
+            {image}
+            <div>
+              {info}
+              {genre}
+            </div>
+          </div>
+          {barChart}
         </div>
-        {image}
       </>
     );
   }
