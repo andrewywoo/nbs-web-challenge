@@ -4,7 +4,7 @@ import "./BarChart.css";
 
 const width = 700;
 const height = 400;
-const margin = { top: 20, right: 5, bottom: 20, left: 40 };
+const margin = { top: 20, right: 5, bottom: 20, left: 50 };
 
 class BarChart extends Component {
   state = {
@@ -13,10 +13,11 @@ class BarChart extends Component {
     yScale: d3.scaleLinear().range([height - margin.bottom, margin.top])
   };
 
+  //generate x and y axis for date and views.
   xAxis = d3
     .axisBottom()
     .scale(this.state.xScale)
-    .tickFormat(d3.timeFormat("%Y-%m-%d"));
+    .tickFormat(d3.timeFormat("%b-%Y"));
   yAxis = d3
     .axisLeft()
     .scale(this.state.yScale)
@@ -27,20 +28,20 @@ class BarChart extends Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     if (!nextProps.data) return null;
-    const data = nextProps.data;
-    console.log(data);
-    //ES6 deconstructoring assignment
+    const { data } = nextProps;
     const { xScale, yScale } = prevState;
+    console.log("max value", d3.max(data, d => d.value));
 
-    //recalculate domain with new data
+    //recalculate scale with new data
     xScale.domain(d3.extent(data, d => d.date));
     yScale.domain([0, d3.max(data, d => d.value)]);
 
+    //create rect x and y values.
     const bars = data.map(d => {
       return {
         x: xScale(d.date),
-        y: height - yScale(d.value) - margin.bottom,
-        height: yScale(d.value)
+        y: yScale(d.value),
+        height: height - yScale(d.value) - margin.bottom
       };
     });
 
@@ -48,6 +49,7 @@ class BarChart extends Component {
   }
 
   componentDidUpdate() {
+    console.log(this.state);
     d3.select(this.refs.xAxis).call(this.xAxis);
     d3.select(this.refs.yAxis).call(this.yAxis);
   }
@@ -56,7 +58,15 @@ class BarChart extends Component {
     return (
       <svg width={width} height={height}>
         {this.state.bars.map((d, i) => {
-          return <rect key={i} x={d.x} y={d.y} height={d.height} width="2" />;
+          return (
+            <rect
+              key={i}
+              x={d.x}
+              y={d.y}
+              height={d.height}
+              width={width / this.state.bars.length}
+            />
+          );
         })}
 
         <g>
