@@ -4,13 +4,6 @@
   align-items: center;
 }
 
-.artist-search-input {
-  height: 30px;
-  width: 200px;
-  margin: 12px;
-  font-size: 1.15rem;
-}
-
 .artist-info {
   width: 70%;
   display: flex;

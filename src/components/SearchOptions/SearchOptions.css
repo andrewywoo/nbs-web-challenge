@@ -1,0 +1,23 @@
+.SearchOptions {
+  display: flex;
+  flex-flow: row;
+  justify-content: center;
+}
+
+.artistSearchInput,
+.DayPickerInput input {
+  height: 30px;
+  width: 200px;
+  margin: 12px;
+  font-size: 1.15rem;
+}
+
+label,
+input {
+  display: block;
+}
+
+label {
+  margin-top: 12px;
+  margin-left: 13px;
+}

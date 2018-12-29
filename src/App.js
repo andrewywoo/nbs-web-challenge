@@ -4,6 +4,8 @@ import axios from "axios";
 import debounce from "lodash/debounce";
 import BarChart from "./components/BarChart/BarChart";
 import MetricViewBar from "./components/MetricViewBar/MetricViewBar";
+import SearchOptions from "./components/SearchOptions/SearchOptions";
+import moment from "moment";
 
 class App extends Component {
   state = {
@@ -12,8 +14,8 @@ class App extends Component {
     metrics: null,
     info: null,
     metricId: 41,
-    startDate: "2017-01-01",
-    endDate: "2017-12-31"
+    startDate: moment("2017-01-01").format("YYYY-MM-DD"),
+    endDate: moment("2017-12-31").format("YYYY-MM-DD")
   };
 
   constructor() {
@@ -33,6 +35,14 @@ class App extends Component {
     if (this.state.artist) {
       if (this.state.artist !== prevState.artist) {
         this.grabArtistData();
+      }
+      if (this.state.startDate && this.state.endDate) {
+        if (
+          this.state.startDate !== prevState.startDate ||
+          this.state.endDate !== prevState.endDate
+        ) {
+          this.grabArtistData();
+        }
       }
     }
   }
@@ -78,12 +88,24 @@ class App extends Component {
       .catch(error => console.log(error));
   }
 
-  handleChange = event => {
+  handleArtistChange = event => {
     this.emitDebouncedSearch(event.target.value);
   };
 
   handleArtistSearch = val => {
     this.setState({ artist: val });
+  };
+
+  handleStartDateChange = date => {
+    this.setState({
+      startDate: moment(date).format("YYYY-MM-DD")
+    });
+  };
+
+  handleEndDateChange = date => {
+    this.setState({
+      endDate: moment(date).format("YYYY-MM-DD")
+    });
   };
 
   getChartData = id => {
@@ -142,11 +164,12 @@ class App extends Component {
     return (
       <>
         <div className="App">
-          <input
-            className="artist-search-input"
-            type="text"
-            placeholder="Search An Artist"
-            onChange={this.handleChange.bind(this)}
+          <SearchOptions
+            handleArtistChange={this.handleArtistChange}
+            handleStartDateChange={this.handleStartDateChange}
+            handleEndDateChange={this.handleEndDateChange}
+            startDate={this.state.startDate}
+            endDate={this.state.endDate}
           />
           <div className="artist-info">
             {image}
