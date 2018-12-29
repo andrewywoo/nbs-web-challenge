@@ -20,7 +20,7 @@ self.__precacheManifest = [
     "url": "/nbs-web-challenge/static/js/runtime~main.5068634b.js"
   },
   {
-    "revision": "94ce597a7fd8193a02108e7b1137a8dd",
+    "revision": "a1332f5f1b7f3333872036a9a288947e",
     "url": "/nbs-web-challenge/index.html"
   }
 ];
