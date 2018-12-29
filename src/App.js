@@ -39,7 +39,6 @@ class App extends Component {
     axios
       .get("metrics/?fields=items.*")
       .then(response => {
-        console.log(response.data);
         this.setState({ info: response.data });
       })
       .catch(error => console.log(error));
@@ -60,7 +59,10 @@ class App extends Component {
       })
       .then(response => {
         if (response) {
-          this.setState({ metrics: response.data });
+          this.setState({
+            metrics: response.data,
+            metricId: response.data.data[0].metricId
+          });
           console.log("metrics", response.data);
           return axios.get(response.data.artist.self.url);
         }
@@ -134,8 +136,6 @@ class App extends Component {
         .sort((a, b) => {
           return a.id - b.id;
         });
-
-      console.log(metricNames);
     }
 
     return (

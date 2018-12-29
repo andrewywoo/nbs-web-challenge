@@ -22,7 +22,6 @@ class BarChart extends Component {
     .axisLeft()
     .scale(this.state.yScale)
     .tickFormat(d => {
-      console.log(d);
       return d;
     });
 
@@ -30,7 +29,6 @@ class BarChart extends Component {
     if (!nextProps.data) return null;
     const { data } = nextProps;
     const { xScale, yScale } = prevState;
-    console.log("max value", d3.max(data, d => d.value));
 
     //recalculate scale with new data
     xScale.domain(d3.extent(data, d => d.date));
@@ -49,7 +47,6 @@ class BarChart extends Component {
   }
 
   componentDidUpdate() {
-    console.log(this.state);
     d3.select(this.refs.xAxis).call(this.xAxis);
     d3.select(this.refs.yAxis).call(this.yAxis);
   }
