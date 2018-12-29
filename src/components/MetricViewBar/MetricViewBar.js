@@ -7,7 +7,7 @@ const metricViewBar = props => {
   if (props.metricNames) {
     buttons = props.metricNames.map(obj => {
       return (
-        <button onClick={props.clicked.bind(this, obj.id)}>
+        <button key={obj.id} onClick={props.clicked.bind(this, obj.id)}>
           {obj.fullName}
         </button>
       );

@@ -11,7 +11,9 @@ class App extends Component {
     artistInfo: null,
     metrics: null,
     info: null,
-    metricId: 41
+    metricId: 41,
+    startDate: "2017-01-01",
+    endDate: "2017-12-31"
   };
 
   constructor() {
@@ -52,9 +54,9 @@ class App extends Component {
         const artistInfo = response.data.artists[0];
         //this.setState({ artistInfo: artistInfo });
         return axios.get(
-          `artists/${
-            artistInfo.id
-          }/data?metricIds=28,41,11,151,247&startDate=2017-01-01&endDate=2017-12-31&timeseries=totals,deltas`
+          `artists/${artistInfo.id}/data?metricIds=28,41,11,151,247&startDate=${
+            this.state.startDate
+          }&endDate=${this.state.endDate}&timeseries=totals,deltas`
         );
       })
       .then(response => {
@@ -125,7 +127,6 @@ class App extends Component {
       metricNames = this.state.metrics.data
         .reduce((acc, metric) => {
           for (let m of this.state.info.items) {
-            console.log(m);
             if (m.id === metric.metricId) {
               acc.push({ fullName: m.fullName, id: m.id });
               break;
