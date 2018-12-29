@@ -47,8 +47,14 @@ class BarChart extends Component {
   }
 
   componentDidUpdate() {
-    d3.select(this.refs.xAxis).call(this.xAxis);
-    d3.select(this.refs.yAxis).call(this.yAxis);
+    d3.select(this.refs.xAxis)
+      .transition()
+      .duration(1000)
+      .call(this.xAxis);
+    d3.select(this.refs.yAxis)
+      .transition()
+      .duration(1000)
+      .call(this.yAxis);
   }
 
   render() {

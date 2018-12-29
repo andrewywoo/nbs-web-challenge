@@ -8,7 +8,7 @@ const searchOptions = props => {
   return (
     <div className="SearchOptions">
       <div>
-        <label for="search">Artist:</label>
+        <label htmlFor="search">Artist:</label>
         <input
           id="search"
           className="artistSearchInput"
@@ -18,7 +18,7 @@ const searchOptions = props => {
         />
       </div>
       <div>
-        <label for="startDt">Start Date:</label>
+        <label htmlFor="startDt">Start Date:</label>
         <DayPickerInput
           id="startDt"
           onDayChange={props.handleStartDateChange}
@@ -29,7 +29,7 @@ const searchOptions = props => {
         />
       </div>
       <div>
-        <label for="endDt">End Date:</label>
+        <label htmlFor="endDt">End Date:</label>
         <DayPickerInput
           id="endDt"
           onDayChange={props.handleEndDateChange}
