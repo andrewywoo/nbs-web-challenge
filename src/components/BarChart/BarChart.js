@@ -12,7 +12,7 @@ class BarChart extends Component {
     bars: [],
     xScale: d3.scaleTime().range([0, width]),
     yScale: d3.scaleLinear().range([height, 0]),
-    // yScale: d3.scaleLog().range([height, 0]),
+    //yScale: d3.scaleLog().range([height, 0]),
     wScale: d3
       .scaleBand()
       .range([0, width])
@@ -25,6 +25,10 @@ class BarChart extends Component {
   //setting up axis and tick formats
   xAxis = d3.axisBottom(this.state.xScale).tickFormat(d3.timeFormat("%b-%Y"));
   yAxis = d3.axisLeft(this.state.yScale);
+  //.ticks(4)
+  //.tickFormat(function(d) {
+  // return d;
+  //});
 
   static getDerivedStateFromProps(nextProps, prevState) {
     if (!nextProps) return null;
@@ -37,8 +41,8 @@ class BarChart extends Component {
     yScale.domain([0, d3.max(data, d => d.value)]);
 
     //Below is yscale for log
-    // const yExtent = d3.extent(data, d => d.value);
-    // yScale.domain(d3.extent(data, d => d.value));
+    //const yExtent = d3.extent(data, d => d.value);
+    //yScale.domain(d3.extent(data, d => d.value));
 
     wScale.domain(data.map(d => d.date));
     accentScale.domain([d3.max(data, d => d.value), 0]);

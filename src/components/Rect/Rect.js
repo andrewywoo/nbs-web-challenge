@@ -20,7 +20,7 @@ class Rect extends Component {
     const { y, height } = this.state;
 
     let rect;
-    //vertical bar transition
+
     //if log scale use yExtent, if not use linear scale from range 0
     if (this.props.yExtent) {
       rect = d3
@@ -30,6 +30,7 @@ class Rect extends Component {
       rect = d3.select(this.refs.rect).attr("y", this.props.yScale(0));
     }
 
+    //set up bar transition
     rect
       .attr("height", 0)
       .transition()

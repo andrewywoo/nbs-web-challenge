@@ -2,9 +2,10 @@ import React, { Component } from "react";
 import "./App.css";
 import axios from "axios";
 import debounce from "lodash/debounce";
-import BarChart from "./components/BarChart/BarChart";
 import MetricViewBar from "./components/MetricViewBar/MetricViewBar";
 import SearchOptions from "./components/SearchOptions/SearchOptions";
+import ArtistInfo from "./components/ArtistInfo/ArtistInfo";
+import SocialMediaMetrics from "./components/SocialMediaMetrics/SocialMediaMetrics";
 import moment from "moment";
 
 class App extends Component {
@@ -111,47 +112,51 @@ class App extends Component {
 
   //redo this. -AWOO
   getChartData = id => {
+    console.log(this.state.metrics.data);
     const dataArr = this.state.metrics.data.filter(item => {
       return item.metricId === id;
     });
+
+    //console.log(dataArr);
+
     if (dataArr.length) {
-      const data = dataArr[0].timeseries.deltas;
+      let data;
+      if (id === 41 || id === 247) {
+        data = dataArr[0].timeseries.deltas;
+      } else {
+        data = dataArr[0].timeseries.totals;
+      }
       const chartData = Object.keys(data).map(keys => {
         return { date: new Date(keys), value: data[keys] };
       });
-      console.log(chartData);
+      //console.log(chartData);
       return chartData;
     }
   };
 
   handleMetricIdChange = id => {
-    this.setState({ metricId: id });
+    if (this.state.metricId !== id) {
+      this.setState({ metricId: id });
+    }
+  };
+
+  onRangeChange = e => {
+    console.log(e);
   };
 
   render() {
+    let { artistInfo, metrics, metricId, metricMetadata } = this.state;
     //initialize dom elements as nulls until artis data is retrieved.
-    let image, info, genre, barChart, metricNames;
+    let metricNames, data;
 
-    if (this.state.artistInfo) {
-      image = (
-        <img
-          height="100"
-          src={this.state.artistInfo.images[0][100]}
-          alt="Artist"
-        />
-      );
-      info = <h1>Artist Name: {this.state.artistInfo.name}</h1>;
-      genre = <h2>Genre: {this.state.artistInfo.genres.join(" ")}</h2>;
-    }
-
-    if (this.state.metrics) {
-      // populate barchart with data
-      barChart = <BarChart data={this.getChartData(this.state.metricId)} />;
+    //create data only after metrics was fetched from API
+    if (metrics) {
+      data = this.getChartData(metricId);
 
       //grab list of metric names.
-      metricNames = this.state.metrics.data
+      metricNames = metrics.data
         .reduce((acc, metric) => {
-          for (let m of this.state.metricMetadata.items) {
+          for (let m of metricMetadata.items) {
             if (m.id === metric.metricId) {
               acc.push({ fullName: m.fullName, id: m.id });
               break;
@@ -167,21 +172,12 @@ class App extends Component {
     return (
       <>
         <div className="App">
-          <SearchOptions
-            handleArtistChange={this.handleArtistChange}
-            handleStartDateChange={this.handleStartDateChange}
-            handleEndDateChange={this.handleEndDateChange}
-            startDate={this.state.startDate}
-            endDate={this.state.endDate}
-          />
-          <div className="artist-info">
-            {image}
-            <div style={{ textAlign: "center" }}>
-              {info}
-              {genre}
-            </div>
-          </div>
-          {barChart}
+          <SearchOptions handleArtistChange={this.handleArtistChange} />
+
+          <ArtistInfo artistInfo={artistInfo} />
+
+          <SocialMediaMetrics data={data} onRangeChang={this.onRangeChange} />
+
           <MetricViewBar
             clicked={this.handleMetricIdChange}
             metricNames={metricNames}
