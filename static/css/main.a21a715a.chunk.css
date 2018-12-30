@@ -1,2 +1,0 @@
-body{margin:0;padding:0}.App{flex-flow:column}.App,.artist-info{display:flex;align-items:center}.artist-info{width:70%;flex-flow:row;justify-content:space-evenly}rect:hover{fill:grey}.metric-view-bar,.metric-view-bar button{margin:12px}.SearchOptions{display:flex;flex-flow:row;justify-content:center}.artistSearchInput,.DayPickerInput input{height:30px;width:200px;margin:12px;font-size:1.15rem}input,label{display:block}label{margin-top:12px;margin-left:13px}
-/*# sourceMappingURL=main.a21a715a.chunk.css.map */
