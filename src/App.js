@@ -110,15 +110,13 @@ class App extends Component {
     });
   };
 
-  //redo this. -AWOO
   getChartData = id => {
-    console.log(this.state.metrics.data);
     const dataArr = this.state.metrics.data.filter(item => {
       return item.metricId === id;
     });
 
-    //console.log(dataArr);
-
+    //if data exists for metric id. grab deltas or totals
+    //refactor this code to create data with both deltas and totals. -AWOO
     if (dataArr.length) {
       let data;
       if (id === 41 || id === 247) {
@@ -140,6 +138,7 @@ class App extends Component {
     }
   };
 
+  //TODO - AWOO - use this method to update date range with range slider.
   onRangeChange = e => {
     console.log(e);
   };
