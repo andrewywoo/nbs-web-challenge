@@ -10,23 +10,32 @@ import moment from "moment";
 class App extends Component {
   state = {
     artist: "",
+    artistId: "",
     artistInfo: null,
     metrics: null,
-    info: null,
+    metricMetadata: null,
     metricId: 41,
-    startDate: moment("2017-01-01").format("YYYY-MM-DD"),
-    endDate: moment("2017-12-31").format("YYYY-MM-DD")
+    startDate: moment("2018-01-01").format("YYYY-MM-DD"),
+    endDate: moment("2018-12-31").format("YYYY-MM-DD")
   };
 
   constructor() {
     super();
     this.emitDebouncedSearch = debounce(this.handleArtistSearch, 500);
   }
+  //Search Artis Event Handlers
+  handleArtistChange = event => {
+    this.emitDebouncedSearch(event.target.value);
+  };
+  handleArtistSearch = val => {
+    this.setState({ artist: val });
+  };
 
   componentDidMount() {
-    this.grabMetricInfo();
+    this.grabMetricMetadata();
     if (this.state.artist) {
-      this.grabArtistData();
+      this.grabArtistMetric();
+      //this.grabArtistInfo();
     }
   }
 
@@ -34,34 +43,29 @@ class App extends Component {
     //Only update artist data if new entry is not blank or different from prev entry
     if (this.state.artist) {
       if (this.state.artist !== prevState.artist) {
-        this.grabArtistData();
-      }
-      if (this.state.startDate && this.state.endDate) {
-        if (
-          this.state.startDate !== prevState.startDate ||
-          this.state.endDate !== prevState.endDate
-        ) {
-          this.grabArtistData();
-        }
+        this.grabArtistMetric();
+        //this.grabArtistInfo();
       }
     }
   }
 
-  grabMetricInfo() {
+  //Grabs the metric meta data.
+  grabMetricMetadata() {
     axios
       .get("metrics/?fields=items.*")
       .then(response => {
-        this.setState({ info: response.data });
+        this.setState({ metricMetadata: response.data });
       })
-      .catch(error => console.log(error));
+      .catch(error => console.log(error, "grabMetricMetadata"));
   }
 
-  grabArtistData() {
+  grabArtistMetric() {
     axios
       .get(`search/v1/artists/?query=${this.state.artist}&limit=1`)
       .then(response => {
         if (!response.data.artists.length) return null;
         const artistInfo = response.data.artists[0];
+        this.setState({ artistId: artistInfo.id });
         return axios.get(
           `artists/${artistInfo.id}/data?metricIds=28,41,11,151,247&startDate=${
             this.state.startDate
@@ -74,26 +78,24 @@ class App extends Component {
             metrics: response.data,
             metricId: response.data.data[0].metricId
           });
-          console.log("metrics", response.data);
-          return axios.get(response.data.artist.self.url);
+          //console.log("metrics", response.data);
+          return this.grabArtistInfo();
         }
       })
       .then(response => {
         if (response) {
-          console.log("artistinfo", response.data);
+          //console.log("artistinfo", response.data);
           this.setState({ artistInfo: response.data });
         }
       })
-      .catch(error => console.log(error));
+      .catch(error => console.log(error, "grabArtistMetric"));
   }
 
-  handleArtistChange = event => {
-    this.emitDebouncedSearch(event.target.value);
-  };
-
-  handleArtistSearch = val => {
-    this.setState({ artist: val });
-  };
+  grabArtistInfo() {
+    return axios
+      .get(`artists/${this.state.artistId}/`)
+      .catch(error => console.log(error, "grabArtistInfo"));
+  }
 
   handleStartDateChange = date => {
     this.setState({
@@ -107,6 +109,7 @@ class App extends Component {
     });
   };
 
+  //redo this. -AWOO
   getChartData = id => {
     const dataArr = this.state.metrics.data.filter(item => {
       return item.metricId === id;
@@ -116,6 +119,7 @@ class App extends Component {
       const chartData = Object.keys(data).map(keys => {
         return { date: new Date(keys), value: data[keys] };
       });
+      console.log(chartData);
       return chartData;
     }
   };
@@ -144,10 +148,10 @@ class App extends Component {
       // populate barchart with data
       barChart = <BarChart data={this.getChartData(this.state.metricId)} />;
 
-      //grab list of metric full names.
+      //grab list of metric names.
       metricNames = this.state.metrics.data
         .reduce((acc, metric) => {
-          for (let m of this.state.info.items) {
+          for (let m of this.state.metricMetadata.items) {
             if (m.id === metric.metricId) {
               acc.push({ fullName: m.fullName, id: m.id });
               break;

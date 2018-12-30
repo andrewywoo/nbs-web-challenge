@@ -1,7 +1,7 @@
 import React from "react";
-import DayPickerInput from "react-day-picker/DayPickerInput";
-import "react-day-picker/lib/style.css";
-import { formatDate, parseDate } from "react-day-picker/moment";
+//import DayPickerInput from "react-day-picker/DayPickerInput";
+//import "react-day-picker/lib/style.css";
+//import { formatDate, parseDate } from "react-day-picker/moment";
 import "./SearchOptions.css";
 
 const searchOptions = props => {
@@ -17,7 +17,7 @@ const searchOptions = props => {
           onChange={props.handleArtistChange}
         />
       </div>
-      <div>
+      {/* <div>
         <label htmlFor="startDt">Start Date:</label>
         <DayPickerInput
           id="startDt"
@@ -38,7 +38,7 @@ const searchOptions = props => {
           parseDate={parseDate}
           value={props.endDate}
         />
-      </div>
+      </div> */}
     </div>
   );
 };
