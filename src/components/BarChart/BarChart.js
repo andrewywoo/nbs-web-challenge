@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Rect from "../Rect/Rect";
 import * as d3 from "d3";
 
 //setting up global values for svg height and width
@@ -11,11 +12,14 @@ class BarChart extends Component {
     bars: [],
     xScale: d3.scaleTime().range([0, width]),
     yScale: d3.scaleLinear().range([height, 0]),
+    // yScale: d3.scaleLog().range([height, 0]),
     wScale: d3
       .scaleBand()
       .range([0, width])
       .paddingInner(0.1)
-      .paddingOuter(0)
+      .paddingOuter(0),
+    accentScale: d3.scaleSequential(d3.interpolateRdBu),
+    yExtent: null
   };
 
   //setting up axis and tick formats
@@ -26,23 +30,30 @@ class BarChart extends Component {
     if (!nextProps) return null;
 
     const { data } = nextProps;
-    const { xScale, yScale, wScale } = prevState;
+    const { xScale, yScale, wScale, accentScale } = prevState;
 
     //recalculate scales with new data
     xScale.domain(d3.extent(data, d => d.date));
     yScale.domain([0, d3.max(data, d => d.value)]);
+
+    //Below is yscale for log
+    // const yExtent = d3.extent(data, d => d.value);
+    // yScale.domain(d3.extent(data, d => d.value));
+
     wScale.domain(data.map(d => d.date));
+    accentScale.domain([d3.max(data, d => d.value), 0]);
 
     //create rect x and y values.
     const bars = data.map(d => {
       return {
         x: xScale(d.date),
         y: yScale(d.value),
-        height: height - yScale(d.value)
+        height: height - yScale(d.value),
+        fill: accentScale(d.value)
       };
     });
 
-    return { bars };
+    return { bars, yScale };
   }
 
   //update axis when component updates
@@ -66,12 +77,15 @@ class BarChart extends Component {
         <g transform={`translate(${margin.left},${margin.top})`}>
           {this.state.bars.map((d, i) => {
             return (
-              <rect
+              <Rect
                 key={i}
                 x={d.x}
                 y={d.y}
                 height={d.height}
                 width={this.state.wScale.bandwidth()}
+                fill={d.fill}
+                yScale={this.state.yScale}
+                // yExtent={this.state.yExtent}
               />
             );
           })}
