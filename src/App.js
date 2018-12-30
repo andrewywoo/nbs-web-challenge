@@ -62,7 +62,6 @@ class App extends Component {
       .then(response => {
         if (!response.data.artists.length) return null;
         const artistInfo = response.data.artists[0];
-        //this.setState({ artistInfo: artistInfo });
         return axios.get(
           `artists/${artistInfo.id}/data?metricIds=28,41,11,151,247&startDate=${
             this.state.startDate
