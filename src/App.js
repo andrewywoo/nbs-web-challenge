@@ -20,10 +20,10 @@ class App extends Component {
     startDate: moment("2018-01-01").format("YYYY-MM-DD"),
     endDate: moment("2018-12-31").format("YYYY-MM-DD"),
     bubbleData: [
-      { radius: Math.random() * 50 + 20 },
-      { radius: Math.random() * 50 + 20 },
-      { radius: Math.random() * 50 + 20 },
-      { radius: Math.random() * 50 + 20 }
+      { name: "New Rules", radius: Math.random() * 50 + 20 },
+      { name: "New Rules", radius: Math.random() * 50 + 20 },
+      { name: "New Rules", radius: Math.random() * 50 + 20 },
+      { name: "New Rules", radius: Math.random() * 50 + 20 }
     ]
   };
 
@@ -67,6 +67,8 @@ class App extends Component {
       .catch(error => console.log(error, "grabMetricMetadata"));
   }
 
+  //Grabs Social Media Metrics
+  //id: 28, 41, 11, 151, 247
   grabArtistMetric() {
     axios
       .get(`search/v1/artists/?query=${this.state.artist}&limit=1`)
@@ -99,6 +101,7 @@ class App extends Component {
       .catch(error => console.log(error, "grabArtistMetric"));
   }
 
+  //Grabs Artist Info
   grabArtistInfo() {
     return axios
       .get(`artists/${this.state.artistId}/`)
@@ -155,6 +158,8 @@ class App extends Component {
   handleBubbles = () => {
     this.setState({
       bubbleData: [
+        { radius: Math.random() * 50 + 20 },
+        { radius: Math.random() * 50 + 20 },
         { radius: Math.random() * 50 + 20 },
         { radius: Math.random() * 50 + 20 },
         { radius: Math.random() * 50 + 20 }
