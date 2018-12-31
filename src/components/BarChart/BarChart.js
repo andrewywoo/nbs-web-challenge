@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import Rect from "../Rect/Rect";
+import Rect from "./Rect/Rect";
 import * as d3 from "d3";
 
 //setting up global values for svg height and width
-const margin = { left: 50, top: 20, right: 20, bottom: 50 };
+const margin = { left: 60, top: 20, right: 20, bottom: 50 };
 const height = 500 - margin.top - margin.bottom;
 const width = 700 - margin.left - margin.right;
 
@@ -31,9 +31,11 @@ class BarChart extends Component {
   //});
 
   static getDerivedStateFromProps(nextProps, prevState) {
+    console.log("getDerivedStateFromProps");
     if (!nextProps) return null;
 
     const { data } = nextProps;
+    //console.log(data);
     const { xScale, yScale, wScale, accentScale } = prevState;
 
     //recalculate scales with new data
@@ -58,6 +60,13 @@ class BarChart extends Component {
     });
 
     return { bars, yScale };
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log("shouldComponentUpdate: this.state =", this.state);
+    console.log("shouldComponentUpdate: nextSate =", nextState);
+    console.log(this.state.bars !== nextState.bars);
+    return this.state.bars !== nextState.bars;
   }
 
   //update axis when component updates

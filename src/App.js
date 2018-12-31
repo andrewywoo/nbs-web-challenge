@@ -6,6 +6,7 @@ import MetricViewBar from "./components/MetricViewBar/MetricViewBar";
 import SearchOptions from "./components/SearchOptions/SearchOptions";
 import ArtistInfo from "./components/ArtistInfo/ArtistInfo";
 import SocialMediaMetrics from "./components/SocialMediaMetrics/SocialMediaMetrics";
+import BubbleChart from "./components/BubbleChart/BubbleChart";
 import moment from "moment";
 
 class App extends Component {
@@ -111,6 +112,7 @@ class App extends Component {
   };
 
   getChartData = id => {
+    //Filters through an array of max 5 metric arrays.
     const dataArr = this.state.metrics.data.filter(item => {
       return item.metricId === id;
     });
@@ -172,6 +174,8 @@ class App extends Component {
       <>
         <div className="App">
           <SearchOptions handleArtistChange={this.handleArtistChange} />
+
+          <BubbleChart />
 
           <ArtistInfo artistInfo={artistInfo} />
 
