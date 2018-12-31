@@ -18,7 +18,13 @@ class App extends Component {
     metricMetadata: null,
     metricId: 41,
     startDate: moment("2018-01-01").format("YYYY-MM-DD"),
-    endDate: moment("2018-12-31").format("YYYY-MM-DD")
+    endDate: moment("2018-12-31").format("YYYY-MM-DD"),
+    bubbleData: [
+      { radius: Math.random() * 50 + 20 },
+      { radius: Math.random() * 50 + 20 },
+      { radius: Math.random() * 50 + 20 },
+      { radius: Math.random() * 50 + 20 }
+    ]
   };
 
   constructor() {
@@ -145,6 +151,17 @@ class App extends Component {
     console.log(e);
   };
 
+  //TODO - Bubble Handler
+  handleBubbles = () => {
+    this.setState({
+      bubbleData: [
+        { radius: Math.random() * 50 + 20 },
+        { radius: Math.random() * 50 + 20 },
+        { radius: Math.random() * 50 + 20 }
+      ]
+    });
+  };
+
   render() {
     let { artistInfo, metrics, metricId, metricMetadata } = this.state;
     //initialize dom elements as nulls until artis data is retrieved.
@@ -175,9 +192,10 @@ class App extends Component {
         <div className="App">
           <SearchOptions handleArtistChange={this.handleArtistChange} />
 
-          <BubbleChart />
-
           <ArtistInfo artistInfo={artistInfo} />
+
+          <BubbleChart data={this.state.bubbleData} />
+          <button onClick={this.handleBubbles}>Change Bubbles</button>
 
           <SocialMediaMetrics data={data} onRangeChang={this.onRangeChange} />
 
