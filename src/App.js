@@ -2,11 +2,10 @@ import React, { Component } from "react";
 import "./App.css";
 import axios from "axios";
 import debounce from "lodash/debounce";
-import MetricViewBar from "./components/MetricViewBar/MetricViewBar";
 import NavigationBar from "./components/NavigationBar/NavigationBar";
-import ArtistInfo from "./components/ArtistInfo/ArtistInfo";
-import SocialMediaMetrics from "./components/SocialMediaMetrics/SocialMediaMetrics";
-import BubbleChart from "./components/BubbleChart/BubbleChart";
+import ArtistInfo from "./containers/ArtistInfo/ArtistInfo";
+import SocialMediaMetrics from "./containers/SocialMediaMetrics/SocialMediaMetrics";
+import TrackMetrics from "./containers/TrackMetrics/TrackMetrics";
 import moment from "moment";
 
 class App extends Component {
@@ -21,7 +20,8 @@ class App extends Component {
     trackMetrics: null,
     startDate: moment("2018-01-01").format("YYYY-MM-DD"),
     endDate: moment("2018-12-31").format("YYYY-MM-DD"),
-    bubbleData: []
+    bubbleData: [],
+    isLoaded: false
   };
 
   constructor() {
@@ -64,13 +64,18 @@ class App extends Component {
       .catch(error => console.log(error, "grabMetricMetadata"));
   }
 
-  //Grabs Social Media Metrics
-  //id: 28, 41, 11, 151, 247
+  //method to grab artist metrics.
   grabArtistMetric() {
+    //API searches for one artist.
     axios
       .get(`search/v1/artists/?query=${this.state.artist}&limit=1`)
       .then(response => {
         if (!response.data.artists.length) return null;
+
+        //When searching for new artist. Set is loaded to true. Add spinner bars for each section.
+        this.setState({ isLoaded: true });
+
+        //Set state for artist info.
         const artistInfo = response.data.artists[0];
         this.setState({ artistId: artistInfo.id });
 
@@ -80,6 +85,8 @@ class App extends Component {
         //grab artist info
         this.grabArtistInfo();
 
+        //Grabs Social Media Metrics
+        //id: 28, 41, 11, 151, 247
         return axios.get(
           `artists/${artistInfo.id}/data?metricIds=28,41,11,151,247&startDate=${
             this.state.startDate
@@ -117,13 +124,18 @@ class App extends Component {
       .get(`metrics/v1/entity/${this.state.artistId}/nestedAssets?metric=410`)
       .then(response => {
         console.log("track metric", response.data);
-        this.setState({ trackMetrics: response.data });
+        //if theres no track metrics. API returns empty array. set trackMetrics state null
+        if (!response.data.data) {
+          this.setState({ trackMetrics: null });
+        } else {
+          this.setState({ trackMetrics: response.data });
+        }
       })
       .catch(error => console.log(error, "grabTrackMetrics"));
   }
 
+  //Filters through an array of metric arrays and returns matching metric ID to pass to barChart component.
   getChartData = id => {
-    //Filters through an array of max 5 metric arrays.
     const dataArr = this.state.metrics.data.filter(item => {
       return item.metricId === id;
     });
@@ -140,21 +152,18 @@ class App extends Component {
       const chartData = Object.keys(data).map(keys => {
         return { date: new Date(keys), value: data[keys] };
       });
-      //console.log(chartData);
+
       return chartData;
     }
   };
 
   //get clean track data.
   getTrackData = () => {
-    console.log(this.state.trackMetrics, this.state.trackMetrics.length);
-    //lol this is not so good...
+    //redo this.
     if (this.state.trackMetrics) {
-      if (this.state.trackMetrics.data.length) {
-        return this.state.trackMetrics.data.filter(data => {
-          return data.summary.TW;
-        });
-      }
+      return this.state.trackMetrics.data.filter(data => {
+        return data.summary.TW;
+      });
     }
   };
 
@@ -171,16 +180,7 @@ class App extends Component {
 
   //TODO - Bubble Handler
   handleBubbles = () => {
-    this.setState({
-      bubbleData: [
-        { name: "New Rules", radius: Math.random() * 50 + 20 },
-        { name: "Hotter Than Hell", radius: Math.random() * 50 + 20 },
-        { name: "Mwah", radius: Math.random() * 50 + 20 },
-        { name: "Test", radius: Math.random() * 50 + 20 },
-        { name: "Andrew", radius: Math.random() * 50 + 20 },
-        { name: "Kaye", radius: Math.random() * 50 + 20 }
-      ]
-    });
+    this.setState({ bubbleData: [] });
   };
 
   render() {
@@ -191,56 +191,32 @@ class App extends Component {
       metricMetadata,
       trackMetrics
     } = this.state;
-    //initialize dom elements as nulls until artis data is retrieved.
-    let metricNames, data, bubbleChart, circleData;
-
-    //create data only after metrics was fetched from API
-    if (metrics) {
-      data = this.getChartData(metricId);
-
-      //grab list of metric names.
-      metricNames = metrics.data
-        .reduce((acc, metric) => {
-          for (let m of metricMetadata.items) {
-            if (m.id === metric.metricId) {
-              acc.push({ fullName: m.fullName, id: m.id });
-              break;
-            }
-          }
-          return acc;
-        }, [])
-        .sort((a, b) => {
-          return a.id - b.id;
-        });
-    }
-
-    if (trackMetrics) {
-      //console.log(trackMetrics);
-      circleData = this.getTrackData();
-      console.log("circ", circleData);
-      bubbleChart = (
-        <>
-          <BubbleChart data={circleData} />
-          <button onClick={this.handleBubbles}>Change Bubbles</button>
-        </>
-      );
-    }
 
     return (
       <>
         <div className="App">
           <NavigationBar handleArtistChange={this.handleArtistChange} />
 
-          <ArtistInfo artistInfo={artistInfo} />
+          {this.state.isLoaded ? (
+            <>
+              <ArtistInfo artistInfo={artistInfo} />
 
-          {bubbleChart}
+              <SocialMediaMetrics
+                metrics={metrics}
+                onRangeChang={this.onRangeChange}
+                handleMetricIdChange={this.handleMetricIdChange}
+                metricMetadata={metricMetadata}
+                getChartData={this.getChartData}
+                metricId={metricId}
+              />
 
-          <SocialMediaMetrics data={data} onRangeChang={this.onRangeChange} />
-
-          <MetricViewBar
-            clicked={this.handleMetricIdChange}
-            metricNames={metricNames}
-          />
+              <TrackMetrics
+                trackMetrics={trackMetrics}
+                getTrackData={this.getTrackData}
+                handleBubbles={this.handleBubbles}
+              />
+            </>
+          ) : null}
         </div>
       </>
     );

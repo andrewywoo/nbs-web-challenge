@@ -1,0 +1,31 @@
+.TrackMetrics {
+  width: 100%;
+  height: 740px;
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  background: #fbf7f5;
+  padding-top: 45px;
+}
+
+.TrackMetrics__label {
+  width: 15%;
+  height: 100%;
+}
+
+.TrackMetrics__label span {
+  width: 400px;
+  display: block;
+  font-size: 3rem;
+  transform: translate(-42%, 70%) rotate(-90deg);
+  color: #e6e3e1;
+}
+
+.TrackMetrics__metrics {
+  width: 85%;
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+}

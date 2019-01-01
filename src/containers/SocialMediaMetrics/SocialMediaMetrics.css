@@ -1,0 +1,35 @@
+.SocialMediaMetrics {
+  width: 100%;
+  height: 600px;
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  background: #fffff4;
+  padding-top: 45px;
+}
+
+.SocialMediaMetrics__label {
+  width: 15%;
+  height: 100%;
+}
+
+.SocialMediaMetrics__label span {
+  width: 400px;
+  display: block;
+  font-size: 3rem;
+  transform: translate(-42%, 100%) rotate(-90deg);
+  color: #e2e2d9;
+}
+
+.SocialMediaMetrics__metrics {
+  width: 85%;
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.range-slider {
+  width: 700px !important;
+}

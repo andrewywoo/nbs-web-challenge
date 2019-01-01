@@ -62,6 +62,7 @@ class BarChart extends Component {
     return { bars, yScale };
   }
 
+  //Only update barChart if data has been changed.
   shouldComponentUpdate(nextProps, nextState) {
     //console.log("shouldComponentUpdate: this.state =", this.state);
     //console.log("shouldComponentUpdate: nextSate =", nextState);
@@ -83,7 +84,6 @@ class BarChart extends Component {
 
   //update axis when component updates
   componentDidUpdate() {
-    console.log("componentDidUpdate");
     d3.select(this.refs.xAxis)
       .transition()
       .duration(800)

@@ -16,17 +16,17 @@ const navigationBar = props => {
       <div className="NavigationBar__links">
         <ul className="NavigationBar__ul">
           <li className="NavigationBar__li">
-            <a href="#info" className="NavigationBar__href">
+            <a href="#artistInfo" className="NavigationBar__href">
               Artist Info
             </a>
           </li>
           <li className="NavigationBar__li">
-            <a href="#info" className="NavigationBar__href">
+            <a href="#socialMedia" className="NavigationBar__href">
               Social Media
             </a>
           </li>
           <li className="NavigationBar__li">
-            <a href="#info" className="NavigationBar__href">
+            <a href="#trackSpins" className="NavigationBar__href">
               Track Spins
             </a>
           </li>
