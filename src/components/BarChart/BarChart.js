@@ -31,7 +31,7 @@ class BarChart extends Component {
   //});
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    console.log("getDerivedStateFromProps");
+    //console.log("getDerivedStateFromProps", nextProps, !nextProps);
     if (!nextProps) return null;
 
     const { data } = nextProps;
@@ -63,14 +63,27 @@ class BarChart extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    console.log("shouldComponentUpdate: this.state =", this.state);
-    console.log("shouldComponentUpdate: nextSate =", nextState);
-    console.log(this.state.bars !== nextState.bars);
-    return this.state.bars !== nextState.bars;
+    //console.log("shouldComponentUpdate: this.state =", this.state);
+    //console.log("shouldComponentUpdate: nextSate =", nextState);
+    //console.log(this.state.bars !== nextState.bars);
+    return true;
+  }
+
+  //happens once. render x and y axis on loadup.
+  componentDidMount() {
+    d3.select(this.refs.xAxis)
+      .transition()
+      .duration(800)
+      .call(this.xAxis);
+    d3.select(this.refs.yAxis)
+      .transition()
+      .duration(800)
+      .call(this.yAxis);
   }
 
   //update axis when component updates
   componentDidUpdate() {
+    console.log("componentDidUpdate");
     d3.select(this.refs.xAxis)
       .transition()
       .duration(800)

@@ -17,14 +17,11 @@ class App extends Component {
     metrics: null,
     metricMetadata: null,
     metricId: 41,
+    trackMetricId: 411,
+    trackMetrics: null,
     startDate: moment("2018-01-01").format("YYYY-MM-DD"),
     endDate: moment("2018-12-31").format("YYYY-MM-DD"),
-    bubbleData: [
-      { name: "New Rules", radius: Math.random() * 50 + 20 },
-      { name: "New Rules", radius: Math.random() * 50 + 20 },
-      { name: "New Rules", radius: Math.random() * 50 + 20 },
-      { name: "New Rules", radius: Math.random() * 50 + 20 }
-    ]
+    bubbleData: []
   };
 
   constructor() {
@@ -76,6 +73,13 @@ class App extends Component {
         if (!response.data.artists.length) return null;
         const artistInfo = response.data.artists[0];
         this.setState({ artistId: artistInfo.id });
+
+        //grab Track metrics
+        this.grabTrackMetrics();
+
+        //grab artist info
+        this.grabArtistInfo();
+
         return axios.get(
           `artists/${artistInfo.id}/data?metricIds=28,41,11,151,247&startDate=${
             this.state.startDate
@@ -89,13 +93,6 @@ class App extends Component {
             metricId: response.data.data[0].metricId
           });
           //console.log("metrics", response.data);
-          return this.grabArtistInfo();
-        }
-      })
-      .then(response => {
-        if (response) {
-          //console.log("artistinfo", response.data);
-          this.setState({ artistInfo: response.data });
         }
       })
       .catch(error => console.log(error, "grabArtistMetric"));
@@ -103,22 +100,27 @@ class App extends Component {
 
   //Grabs Artist Info
   grabArtistInfo() {
-    return axios
+    axios
       .get(`artists/${this.state.artistId}/`)
+      .then(response => {
+        if (response) {
+          //console.log("artistinfo", response.data);
+          this.setState({ artistInfo: response.data });
+        }
+      })
       .catch(error => console.log(error, "grabArtistInfo"));
   }
 
-  handleStartDateChange = date => {
-    this.setState({
-      startDate: moment(date).format("YYYY-MM-DD")
-    });
-  };
-
-  handleEndDateChange = date => {
-    this.setState({
-      endDate: moment(date).format("YYYY-MM-DD")
-    });
-  };
+  //Grab Artist Track Metrics
+  grabTrackMetrics() {
+    axios
+      .get(`metrics/v1/entity/${this.state.artistId}/nestedAssets?metric=410`)
+      .then(response => {
+        console.log("track metric", response.data);
+        this.setState({ trackMetrics: response.data });
+      })
+      .catch(error => console.log(error, "grabTrackMetrics"));
+  }
 
   getChartData = id => {
     //Filters through an array of max 5 metric arrays.
@@ -143,6 +145,16 @@ class App extends Component {
     }
   };
 
+  //get clean track data.
+  getTrackData = () => {
+    console.log(this.state.trackMetrics);
+    if (this.state.trackMetrics) {
+      return this.state.trackMetrics.data.filter(data => {
+        return data.summary.TW;
+      });
+    }
+  };
+
   handleMetricIdChange = id => {
     if (this.state.metricId !== id) {
       this.setState({ metricId: id });
@@ -158,19 +170,26 @@ class App extends Component {
   handleBubbles = () => {
     this.setState({
       bubbleData: [
-        { radius: Math.random() * 50 + 20 },
-        { radius: Math.random() * 50 + 20 },
-        { radius: Math.random() * 50 + 20 },
-        { radius: Math.random() * 50 + 20 },
-        { radius: Math.random() * 50 + 20 }
+        { name: "New Rules", radius: Math.random() * 50 + 20 },
+        { name: "Hotter Than Hell", radius: Math.random() * 50 + 20 },
+        { name: "Mwah", radius: Math.random() * 50 + 20 },
+        { name: "Test", radius: Math.random() * 50 + 20 },
+        { name: "Andrew", radius: Math.random() * 50 + 20 },
+        { name: "Kaye", radius: Math.random() * 50 + 20 }
       ]
     });
   };
 
   render() {
-    let { artistInfo, metrics, metricId, metricMetadata } = this.state;
+    let {
+      artistInfo,
+      metrics,
+      metricId,
+      metricMetadata,
+      trackMetrics
+    } = this.state;
     //initialize dom elements as nulls until artis data is retrieved.
-    let metricNames, data;
+    let metricNames, data, bubbleChart, circleData;
 
     //create data only after metrics was fetched from API
     if (metrics) {
@@ -192,15 +211,27 @@ class App extends Component {
         });
     }
 
+    if (trackMetrics) {
+      if (!trackMetrics.length) {
+        console.log(trackMetrics);
+        circleData = this.getTrackData();
+        bubbleChart = (
+          <>
+            <BubbleChart data={circleData} />
+            <button onClick={this.handleBubbles}>Change Bubbles</button>
+          </>
+        );
+      }
+    }
+
     return (
       <>
         <div className="App">
           <SearchOptions handleArtistChange={this.handleArtistChange} />
 
-          <ArtistInfo artistInfo={artistInfo} />
+          {bubbleChart}
 
-          <BubbleChart data={this.state.bubbleData} />
-          <button onClick={this.handleBubbles}>Change Bubbles</button>
+          <ArtistInfo artistInfo={artistInfo} />
 
           <SocialMediaMetrics data={data} onRangeChang={this.onRangeChange} />
 
