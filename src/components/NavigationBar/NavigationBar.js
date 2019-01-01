@@ -20,12 +20,12 @@ const navigationBar = props => {
               Artist Info
             </a>
           </li>
-          <li className="NavigationBar__link">
+          <li className="NavigationBar__li">
             <a href="#info" className="NavigationBar__href">
               Social Media
             </a>
           </li>
-          <li className="NavigationBar__link">
+          <li className="NavigationBar__li">
             <a href="#info" className="NavigationBar__href">
               Track Spins
             </a>

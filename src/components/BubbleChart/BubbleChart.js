@@ -15,7 +15,7 @@ const simulation = d3
 class BubbleChart extends Component {
   state = {
     circles: [],
-    rScale: d3.scaleLinear().range([30, 130]),
+    rScale: d3.scaleLinear().range([30, 125]),
     cScale: d3.scaleOrdinal(d3.schemePaired)
   };
 
@@ -105,7 +105,9 @@ class BubbleChart extends Component {
       .attr("font-size", d => this.state.rScale(d.value) / 4)
       .attr("fill", "black")
       .text(d => {
-        //this is some crazy stuff.. i didn't want to spend too much time messing with text size to fit bubbles.
+        //this is some cutting edge stuff..
+        //i didn't want to spend too much time messing with text size to fit bubbles.
+        //will refactor this when i have more time.
         if (d.name.length > 17 && this.state.rScale(d.value) / 3 > 17)
           return d.name.substring(0, 17);
         return d.name.substring(0, this.state.rScale(d.value) / 3);
