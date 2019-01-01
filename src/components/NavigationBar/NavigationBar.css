@@ -1,0 +1,41 @@
+.NavigationBar {
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+
+.artistSearchInput {
+  height: 30px;
+  width: 250px;
+  margin: 12px;
+  font-size: 1.15rem;
+}
+
+.NavigationBar__links {
+  width: 40%;
+}
+
+.NavigationBar__ul {
+  list-style: none;
+  display: flex;
+  flex-flow: row;
+  justify-content: space-evenly;
+}
+
+.NavigationBar__li {
+  display: flex;
+}
+
+.NavigationBar__href {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.NavigationBar__href:hover,
+.NavigationBar__href:active {
+  color: green;
+}

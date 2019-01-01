@@ -3,7 +3,7 @@ import "./App.css";
 import axios from "axios";
 import debounce from "lodash/debounce";
 import MetricViewBar from "./components/MetricViewBar/MetricViewBar";
-import SearchOptions from "./components/SearchOptions/SearchOptions";
+import NavigationBar from "./components/NavigationBar/NavigationBar";
 import ArtistInfo from "./components/ArtistInfo/ArtistInfo";
 import SocialMediaMetrics from "./components/SocialMediaMetrics/SocialMediaMetrics";
 import BubbleChart from "./components/BubbleChart/BubbleChart";
@@ -147,11 +147,14 @@ class App extends Component {
 
   //get clean track data.
   getTrackData = () => {
-    console.log(this.state.trackMetrics);
+    console.log(this.state.trackMetrics, this.state.trackMetrics.length);
+    //lol this is not so good...
     if (this.state.trackMetrics) {
-      return this.state.trackMetrics.data.filter(data => {
-        return data.summary.TW;
-      });
+      if (this.state.trackMetrics.data.length) {
+        return this.state.trackMetrics.data.filter(data => {
+          return data.summary.TW;
+        });
+      }
     }
   };
 
@@ -212,26 +215,25 @@ class App extends Component {
     }
 
     if (trackMetrics) {
-      if (!trackMetrics.length) {
-        console.log(trackMetrics);
-        circleData = this.getTrackData();
-        bubbleChart = (
-          <>
-            <BubbleChart data={circleData} />
-            <button onClick={this.handleBubbles}>Change Bubbles</button>
-          </>
-        );
-      }
+      //console.log(trackMetrics);
+      circleData = this.getTrackData();
+      console.log("circ", circleData);
+      bubbleChart = (
+        <>
+          <BubbleChart data={circleData} />
+          <button onClick={this.handleBubbles}>Change Bubbles</button>
+        </>
+      );
     }
 
     return (
       <>
         <div className="App">
-          <SearchOptions handleArtistChange={this.handleArtistChange} />
-
-          {bubbleChart}
+          <NavigationBar handleArtistChange={this.handleArtistChange} />
 
           <ArtistInfo artistInfo={artistInfo} />
+
+          {bubbleChart}
 
           <SocialMediaMetrics data={data} onRangeChang={this.onRangeChange} />
 

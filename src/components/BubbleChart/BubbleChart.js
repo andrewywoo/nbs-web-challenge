@@ -3,7 +3,7 @@ import * as d3 from "d3";
 
 //setting up global values for svg height and width
 const margin = { left: 20, top: 20, right: 20, bottom: 20 };
-const height = 500 - margin.top - margin.bottom;
+const height = 600 - margin.top - margin.bottom;
 const width = 700 - margin.left - margin.right;
 
 //setup the simulation for the bubbles to explode from the center on data change
@@ -15,13 +15,12 @@ const simulation = d3
 class BubbleChart extends Component {
   state = {
     circles: [],
-    rScale: d3.scaleLinear().range([20, 100]),
+    rScale: d3.scaleLinear().range([30, 130]),
     cScale: d3.scaleOrdinal(d3.schemePaired)
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    //console.log("getDerivedStateFromProps", nextProps);
-    // return null;
+    //console.log("getDerivedStateFromProps", nextProps,prevState);
     if (!nextProps) return null;
     const { data } = nextProps;
     const { rScale, cScale } = prevState;
@@ -31,17 +30,13 @@ class BubbleChart extends Component {
       return b.summary.TW - a.summary.TW;
     });
 
-    const top10 = sortedData.slice(0, 15);
-
-    console.log("data inside bubble chart", top10);
-
-    //Update Scale for Track data
-
-    rScale.domain([2000, d3.max(top10, d => d.summary.TW)]);
-    cScale.domain(top10, d => d.metadata.asset_name);
+    const top15 = sortedData.slice(0, 15);
+    //Update scales with new data
+    rScale.domain(d3.extent(top15, d => d.summary.TW));
+    cScale.domain(top15, d => d.metadata.asset_name);
 
     //create data for circles
-    const circles = top10.map(data => {
+    const circles = top15.map(data => {
       return { name: data.metadata.asset_name, value: data.summary.TW };
     });
 
@@ -95,16 +90,8 @@ class BubbleChart extends Component {
 
     //ENTER
     this.nodeEnter = this.node.enter().append("g");
-    this.circles = this.nodeEnter
-      .append("circle")
-      .attr("r", d => this.state.rScale(d.value))
-      .attr("fill", d => this.state.cScale(d.name));
-    this.label = this.nodeEnter
-      .append("text")
-      .attr("text-anchor", "middle")
-      .attr("font-size", d => d.value / 4)
-      .attr("fill", "black")
-      .text(d => d.name);
+    this.circles = this.nodeEnter.append("circle");
+    this.label = this.nodeEnter.append("text");
 
     //ENTER + UPDATE
     this.node = this.nodeEnter.merge(this.node);
@@ -117,14 +104,17 @@ class BubbleChart extends Component {
       .attr("text-anchor", "middle")
       .attr("font-size", d => this.state.rScale(d.value) / 4)
       .attr("fill", "black")
-      .text(d => d.name);
+      .text(d => {
+        //this is some crazy stuff.. i didn't want to spend too much time messing with text size to fit bubbles.
+        if (d.name.length > 17 && this.state.rScale(d.value) / 3 > 17)
+          return d.name.substring(0, 17);
+        return d.name.substring(0, this.state.rScale(d.value) / 3);
+      });
   }
 
+  //update positioning of group every tick.
   forceTick = () => {
-    //Group
     this.node.attr("transform", d => `translate(${d.x}, ${d.y})`);
-    //update
-    // this.circles.attr("cx", d => d.x).attr("cy", d => d.y);
   };
 
   render() {
