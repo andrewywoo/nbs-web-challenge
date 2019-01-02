@@ -54,6 +54,10 @@ class App extends Component {
     }
   }
 
+  resetArtistInfo() {
+    this.setState({ trackMetrics: null, metrics: null, artistInfo: null });
+  }
+
   //Grabs the metric meta data.
   grabMetricMetadata() {
     axios
@@ -74,6 +78,7 @@ class App extends Component {
 
         //When searching for new artist. Set is loaded to true. Add spinner bars for each section.
         this.setState({ isLoaded: true });
+        this.resetArtistInfo();
 
         //Set state for artist info.
         const artistInfo = response.data.artists[0];
@@ -175,6 +180,7 @@ class App extends Component {
 
   //TODO - AWOO - use this method to update date range with range slider.
   onRangeChange = e => {
+    //manage dates with moment js. convert to number format. set state for endDate-startDate
     console.log(e);
   };
 
@@ -189,7 +195,8 @@ class App extends Component {
       metrics,
       metricId,
       metricMetadata,
-      trackMetrics
+      trackMetrics,
+      isLoaded
     } = this.state;
 
     return (
@@ -197,11 +204,12 @@ class App extends Component {
         <div className="App">
           <NavigationBar handleArtistChange={this.handleArtistChange} />
 
-          {this.state.isLoaded ? (
+          {isLoaded ? (
             <>
-              <ArtistInfo artistInfo={artistInfo} />
+              <ArtistInfo artistInfo={artistInfo} isLoaded={isLoaded} />
 
               <SocialMediaMetrics
+                isLoaded={isLoaded}
                 metrics={metrics}
                 onRangeChang={this.onRangeChange}
                 handleMetricIdChange={this.handleMetricIdChange}
@@ -211,6 +219,7 @@ class App extends Component {
               />
 
               <TrackMetrics
+                isLoaded={isLoaded}
                 trackMetrics={trackMetrics}
                 getTrackData={this.getTrackData}
                 handleBubbles={this.handleBubbles}
