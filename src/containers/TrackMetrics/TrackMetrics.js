@@ -7,7 +7,7 @@ const trackMetrics = props => {
   let circleData = null;
   let content = null;
   let bubbleTitle = null;
-  let bubbleTitles = {};
+  //let bubbleTitles = {};
 
   if (props.isLoaded) {
     content = <Spinner />;
@@ -16,15 +16,17 @@ const trackMetrics = props => {
   if (props.trackMetrics[props.trackMetricId]) {
     circleData = props.getTrackData(props.trackMetricId);
 
-    bubbleTitle = props.metricMetadata.items.filter(
-      m => m.id === props.trackMetricId
-    )[0].fullName;
+    bubbleTitle = props.metricMetadata[props.trackMetricId].fullName;
+
+    // bubbleTitle = props.metricMetadata.items.filter(
+    //   m => m.id === props.trackMetricId
+    // )[0].fullName;
 
     //spot holder
-    bubbleTitles = props.metricMetadata.items.reduce((acc, m) => {
-      acc[m.id] = m.fullName;
-      return acc;
-    }, {});
+    // bubbleTitles = props.metricMetadata.items.reduce((acc, m) => {
+    //   acc[m.id] = m.fullName;
+    //   return acc;
+    // }, {});
 
     content = (
       <>

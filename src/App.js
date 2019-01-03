@@ -65,7 +65,13 @@ class App extends Component {
     axios
       .get("metrics/?fields=items.*")
       .then(response => {
-        this.setState({ metricMetadata: response.data });
+        //grab fullname and descriptions for corresponding ids.
+        let metricTitles = response.data.items.reduce((acc, m) => {
+          acc[m.id] = { fullName: m.fullName, description: m.description };
+          return acc;
+        }, {});
+
+        this.setState({ metricMetadata: metricTitles });
       })
       .catch(error => console.log(error, "grabMetricMetadata"));
   }
@@ -141,9 +147,7 @@ class App extends Component {
     //set track Metrics to null when searching new metrics.
     this.setState({ trackMetrics: {} });
 
-    //Work on this tomorrow.
-    //const trackMetricIds = [410, 411, 413, 414];
-
+    //grab track metrics in order.
     axios
       .get(`metrics/v1/entity/${this.state.artistId}/nestedAssets?metric=410`)
       .then(response => {
@@ -200,19 +204,6 @@ class App extends Component {
         this.setState({ trackMetrics: tMetric });
       })
       .catch(error => console.log(error, "grabTrackMetrics"));
-
-    // axios
-    //   .get(`metrics/v1/entity/${this.state.artistId}/nestedAssets?metric=410`)
-    //   .then(response => {
-    //     console.log("track metric", response.data);
-    //     //if theres no track metrics. API returns empty array. set trackMetrics state null
-    //     if (!response.data.data) {
-    //       this.setState({ trackMetrics: null });
-    //     } else {
-    //       this.setState({ trackMetrics: response.data });
-    //     }
-    //   })
-    //   .catch(error => console.log(error, "grabTrackMetrics"));
   }
 
   //Filters through an array of metric arrays and returns matching metric ID to pass to barChart component.

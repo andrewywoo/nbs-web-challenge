@@ -32,14 +32,15 @@ const socialMediaMetrics = props => {
   if (props.metrics) {
     //Grab data if metric Id was changed
     data = props.getChartData(props.metricId);
-    //grab list of metric names.
+
+    //grab list of metric names. gets passed into metric view bar.
     metricNames = props.metrics.data
       .reduce((acc, metric) => {
-        for (let m of props.metricMetadata.items) {
-          if (m.id === metric.metricId) {
-            acc.push({ fullName: m.fullName, id: m.id });
-            break;
-          }
+        //look up fullName for each existing metric for artist.
+        let m = props.metricMetadata[metric.metricId];
+        console.log(m);
+        if (m) {
+          acc.push({ fullName: m.fullName, id: metric.metricId });
         }
         return acc;
       }, [])
@@ -47,9 +48,9 @@ const socialMediaMetrics = props => {
         return a.id - b.id;
       });
 
-    chartTitle = metricNames.filter(name => name.id === props.metricId)[0]
-      .fullName;
+    chartTitle = props.metricMetadata[props.metricId].fullName;
 
+    //grab the last word for y label. gets passed into bar chart.
     let cArr = chartTitle.split(" ");
     yLabel = cArr[cArr.length - 1];
 
