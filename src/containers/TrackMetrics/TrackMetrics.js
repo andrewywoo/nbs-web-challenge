@@ -2,48 +2,31 @@ import React from "react";
 import BubbleChart from "../../components/BubbleChart/BubbleChart";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import "./TrackMetrics.css";
+import TrackViewBar from "../../components/TrackViewBar/TrackViewBar";
 
 const trackMetrics = props => {
   let circleData = null;
   let content = null;
   let bubbleTitle = null;
-  //let bubbleTitles = {};
 
   if (props.isLoaded) {
     content = <Spinner />;
   }
 
   if (props.trackMetrics[props.trackMetricId]) {
+    //grab bubble chart data with new metric id.
     circleData = props.getTrackData(props.trackMetricId);
 
+    //grab chart title from metric dictionary.
     bubbleTitle = props.metricMetadata[props.trackMetricId].fullName;
-
-    // bubbleTitle = props.metricMetadata.items.filter(
-    //   m => m.id === props.trackMetricId
-    // )[0].fullName;
-
-    //spot holder
-    // bubbleTitles = props.metricMetadata.items.reduce((acc, m) => {
-    //   acc[m.id] = m.fullName;
-    //   return acc;
-    // }, {});
 
     content = (
       <>
-        {props.trackMetrics[410] ? (
-          <button onClick={props.handleTrackIdChange.bind(this, 410)}>
-            Pandora Radio Plays
-          </button>
-        ) : (
-          "null"
-        )}
-        {props.trackMetrics[411] ? (
-          <button onClick={props.handleTrackIdChange.bind(this, 411)}>
-            Pandora Interactive Plays
-          </button>
-        ) : (
-          "null"
-        )}
+        <TrackViewBar
+          trackMetrics={props.trackMetrics}
+          handleTrackIdChange={props.handleTrackIdChange}
+          metricMetadata={props.metricMetadata}
+        />
         <h1 className="TrackMetrics__metrics-title">{bubbleTitle}</h1>
         <BubbleChart className="BubbleChart" data={circleData} />
       </>
