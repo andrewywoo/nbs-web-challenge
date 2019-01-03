@@ -2,9 +2,20 @@ import React from "react";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import BarChart from "../../components/BarChart/BarChart";
 import MetricViewBar from "../../components/MetricViewBar/MetricViewBar";
-import Range from "rc-slider/lib/Range";
+import Slider from "rc-slider";
+//import Range from "rc-slider/lib/Range";
+import moment from "moment";
 import "rc-slider/assets/index.css";
 import "./SocialMediaMetrics.css";
+
+const createSliderWithTooltip = Slider.createSliderWithTooltip;
+const Range = createSliderWithTooltip(Slider.Range);
+//get 5 years ago in unix time
+const startDateUnix = moment(new Date())
+  .subtract(5, "y")
+  .unix();
+//get todays date in unix time
+const endDateUnix = moment(new Date()).unix();
 
 const socialMediaMetrics = props => {
   // let barChart = null;
@@ -15,8 +26,6 @@ const socialMediaMetrics = props => {
   if (props.isLoaded) {
     content = <Spinner />;
   }
-
-  console.log(props.metrics);
   //only do work if metrics is not null;
   if (props.metrics) {
     //Grab data if metric Id was changed
@@ -38,14 +47,20 @@ const socialMediaMetrics = props => {
 
     content = (
       <>
-        <BarChart data={data} />
+        <BarChart
+          chartData={data}
+          startDate={props.startDate}
+          endDate={props.endDate}
+        />
         <Range
           className="range-slider"
-          defaultValue={[0, 10]}
-          min={0}
-          max={10}
+          defaultValue={[props.startDate, props.endDate]}
+          min={startDateUnix}
+          max={endDateUnix}
+          step={86400 /*1 day in seconds*/}
           allowCross={false}
-          onChange={props.onRangeChange}
+          tipFormatter={value => moment.unix(value).format("MMM Do YYYY")}
+          onAfterChange={props.onRangeChange}
         />
         <MetricViewBar
           clicked={props.handleMetricIdChange}
@@ -53,16 +68,6 @@ const socialMediaMetrics = props => {
         />
       </>
     );
-
-    // populate barchart with data
-    // barChart = (
-    //   <div id="socialMedia" className="SocialMediaMetrics">
-    //     <div className="SocialMediaMetrics__label">
-    //       <span>Social Media</span>
-    //     </div>
-    //     <div className="SocialMediaMetrics__metrics" />
-    //   </div>
-    // );
   }
 
   //return barChart;

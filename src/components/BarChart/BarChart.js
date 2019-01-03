@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Rect from "./Rect/Rect";
+import moment from "moment";
 import * as d3 from "d3";
 
 //setting up global values for svg height and width
@@ -34,18 +35,29 @@ class BarChart extends Component {
     //console.log("getDerivedStateFromProps", nextProps, !nextProps);
     if (!nextProps) return null;
 
-    const { data } = nextProps;
+    const { chartData, startDate, endDate } = nextProps;
     //console.log(data);
     const { xScale, yScale, wScale, accentScale } = prevState;
+
+    //clean data
+    const data = chartData
+      .filter(d => {
+        let sDate = moment.unix(startDate);
+        let eDate = moment.unix(endDate);
+        let date = moment(d.date);
+        return d.value && d.date && date >= sDate && date <= eDate;
+      })
+      .map(d => {
+        d.value = +d.value;
+        return d;
+      });
 
     //recalculate scales with new data
     xScale.domain(d3.extent(data, d => d.date));
     yScale.domain([0, d3.max(data, d => d.value)]);
-
     //Below is yscale for log
     //const yExtent = d3.extent(data, d => d.value);
     //yScale.domain(d3.extent(data, d => d.value));
-
     wScale.domain(data.map(d => d.date));
     accentScale.domain([d3.max(data, d => d.value), 0]);
 

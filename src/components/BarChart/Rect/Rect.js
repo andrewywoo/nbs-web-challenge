@@ -21,7 +21,7 @@ class Rect extends Component {
 
     let rect;
 
-    //if log scale use yExtent, if not use linear scale from range 0
+    //use yExtent if exists, if not use linear scale from range 0
     if (this.props.yExtent) {
       rect = d3
         .select(this.refs.rect)
@@ -37,6 +37,8 @@ class Rect extends Component {
       .duration(800)
       .attr("y", y)
       .attr("height", height);
+
+    rect.exit().remove();
   }
 
   render() {

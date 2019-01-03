@@ -18,14 +18,16 @@ class App extends Component {
     metricId: 41,
     trackMetricId: 411,
     trackMetrics: null,
-    startDate: moment("2018-01-01").format("YYYY-MM-DD"),
-    endDate: moment("2018-12-31").format("YYYY-MM-DD"),
+    startDate: moment(new Date())
+      .subtract(5, "y")
+      .unix(),
+    endDate: moment(new Date()).unix(),
     bubbleData: [],
     isLoaded: false
   };
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.emitDebouncedSearch = debounce(this.handleArtistSearch, 500);
   }
   //Search Artis Event Handlers
@@ -70,6 +72,12 @@ class App extends Component {
 
   //method to grab artist metrics.
   grabArtistMetric() {
+    //Grab 5 years of data
+    const startDate = moment(new Date())
+      .subtract(5, "y")
+      .format("YYYY-MM-DD");
+    const endDate = moment(new Date()).format("YYYY-MM-DD");
+
     //API searches for one artist.
     axios
       .get(`search/v1/artists/?query=${this.state.artist}&limit=1`)
@@ -90,12 +98,14 @@ class App extends Component {
         //grab artist info
         this.grabArtistInfo();
 
+        //set metrics to null when searching for new artist metrics;
+        this.setState({ metrics: null });
         //Grabs Social Media Metrics
         //id: 28, 41, 11, 151, 247
         return axios.get(
-          `artists/${artistInfo.id}/data?metricIds=28,41,11,151,247&startDate=${
-            this.state.startDate
-          }&endDate=${this.state.endDate}&timeseries=totals,deltas`
+          `artists/${
+            artistInfo.id
+          }/data?metricIds=28,41,11,151,247&startDate=${startDate}&endDate=${endDate}&timeseries=totals,deltas`
         );
       })
       .then(response => {
@@ -112,6 +122,9 @@ class App extends Component {
 
   //Grabs Artist Info
   grabArtistInfo() {
+    //set artist info to null when searching for new artist info.
+    this.setState({ artistInfo: null });
+
     axios
       .get(`artists/${this.state.artistId}/`)
       .then(response => {
@@ -125,6 +138,9 @@ class App extends Component {
 
   //Grab Artist Track Metrics
   grabTrackMetrics() {
+    //set track Metrics to null when searching new metrics.
+    this.setState({ trackMetrics: null });
+
     axios
       .get(`metrics/v1/entity/${this.state.artistId}/nestedAssets?metric=410`)
       .then(response => {
@@ -178,10 +194,9 @@ class App extends Component {
     }
   };
 
-  //TODO - AWOO - use this method to update date range with range slider.
   onRangeChange = e => {
-    //manage dates with moment js. convert to number format. set state for endDate-startDate
-    console.log(e);
+    //manage dates with moment js. convert to unix time format. set state for endDate-startDate
+    this.setState({ startDate: e[0], endDate: e[1] });
   };
 
   //TODO - Bubble Handler
@@ -196,7 +211,9 @@ class App extends Component {
       metricId,
       metricMetadata,
       trackMetrics,
-      isLoaded
+      isLoaded,
+      startDate,
+      endDate
     } = this.state;
 
     return (
@@ -211,11 +228,13 @@ class App extends Component {
               <SocialMediaMetrics
                 isLoaded={isLoaded}
                 metrics={metrics}
-                onRangeChang={this.onRangeChange}
+                onRangeChange={this.onRangeChange}
                 handleMetricIdChange={this.handleMetricIdChange}
                 metricMetadata={metricMetadata}
                 getChartData={this.getChartData}
                 metricId={metricId}
+                startDate={startDate}
+                endDate={endDate}
               />
 
               <TrackMetrics
