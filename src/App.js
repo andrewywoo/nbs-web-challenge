@@ -16,8 +16,8 @@ class App extends Component {
     metrics: null,
     metricMetadata: null,
     metricId: 41,
-    trackMetricId: 411,
-    trackMetrics: null,
+    trackMetricId: 410,
+    trackMetrics: {},
     startDate: moment(new Date())
       .subtract(5, "y")
       .unix(),
@@ -57,7 +57,7 @@ class App extends Component {
   }
 
   resetArtistInfo() {
-    this.setState({ trackMetrics: null, metrics: null, artistInfo: null });
+    this.setState({ trackMetrics: {}, metrics: null, artistInfo: null });
   }
 
   //Grabs the metric meta data.
@@ -139,20 +139,80 @@ class App extends Component {
   //Grab Artist Track Metrics
   grabTrackMetrics() {
     //set track Metrics to null when searching new metrics.
-    this.setState({ trackMetrics: null });
+    this.setState({ trackMetrics: {} });
+
+    //Work on this tomorrow.
+    //const trackMetricIds = [410, 411, 413, 414];
 
     axios
       .get(`metrics/v1/entity/${this.state.artistId}/nestedAssets?metric=410`)
       .then(response => {
-        console.log("track metric", response.data);
+        console.log("track metric410", response.data);
+        const tMetric = { ...this.state.trackMetrics };
         //if theres no track metrics. API returns empty array. set trackMetrics state null
         if (!response.data.data) {
-          this.setState({ trackMetrics: null });
+          tMetric[410] = null;
         } else {
-          this.setState({ trackMetrics: response.data });
+          tMetric[410] = response.data;
         }
+        this.setState({ trackMetrics: tMetric });
+        return axios.get(
+          `metrics/v1/entity/${this.state.artistId}/nestedAssets?metric=411`
+        );
+      })
+      .then(response => {
+        console.log("track metric411", response.data);
+        const tMetric = { ...this.state.trackMetrics };
+        //if theres no track metrics. API returns empty array. set trackMetrics state null
+        if (!response.data.data) {
+          tMetric[410] = null;
+        } else {
+          tMetric[410] = response.data;
+        }
+        this.setState({ trackMetrics: tMetric });
+        return axios.get(
+          `metrics/v1/entity/${this.state.artistId}/nestedAssets?metric=413`
+        );
+      })
+      .then(response => {
+        console.log("track metric413", response.data);
+        const tMetric = { ...this.state.trackMetrics };
+        //if theres no track metrics. API returns empty array. set trackMetrics state null
+        if (!response.data.data) {
+          tMetric[410] = null;
+        } else {
+          tMetric[410] = response.data;
+        }
+        this.setState({ trackMetrics: tMetric });
+        return axios.get(
+          `metrics/v1/entity/${this.state.artistId}/nestedAssets?metric=414`
+        );
+      })
+      .then(response => {
+        console.log("track metric414", response.data);
+        const tMetric = { ...this.state.trackMetrics };
+        //if theres no track metrics. API returns empty array. set trackMetrics state null
+        if (!response.data.data) {
+          tMetric[410] = null;
+        } else {
+          tMetric[410] = response.data;
+        }
+        this.setState({ trackMetrics: tMetric });
       })
       .catch(error => console.log(error, "grabTrackMetrics"));
+
+    // axios
+    //   .get(`metrics/v1/entity/${this.state.artistId}/nestedAssets?metric=410`)
+    //   .then(response => {
+    //     console.log("track metric", response.data);
+    //     //if theres no track metrics. API returns empty array. set trackMetrics state null
+    //     if (!response.data.data) {
+    //       this.setState({ trackMetrics: null });
+    //     } else {
+    //       this.setState({ trackMetrics: response.data });
+    //     }
+    //   })
+    //   .catch(error => console.log(error, "grabTrackMetrics"));
   }
 
   //Filters through an array of metric arrays and returns matching metric ID to pass to barChart component.
@@ -179,9 +239,9 @@ class App extends Component {
   };
 
   //get track data
-  getTrackData = () => {
-    if (this.state.trackMetrics) {
-      return this.state.trackMetrics.data.filter(data => {
+  getTrackData = id => {
+    if (this.state.trackMetrics[id]) {
+      return this.state.trackMetrics[id].data.filter(data => {
         return data.summary.TW;
       });
     }
@@ -200,8 +260,7 @@ class App extends Component {
     }
   };
 
-  //TODO - Bubble Handler
-  handleBubbles = () => {
+  handleTrackIdChange = id => {
     this.setState({ bubbleData: [] });
   };
 
@@ -245,7 +304,7 @@ class App extends Component {
                 trackMetricId={trackMetricId}
                 trackMetrics={trackMetrics}
                 getTrackData={this.getTrackData}
-                handleBubbles={this.handleBubbles}
+                handleTrackIdChange={this.handleTrackIdChange}
               />
             </>
           ) : null}

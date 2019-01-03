@@ -12,8 +12,8 @@ const trackMetrics = props => {
     content = <Spinner />;
   }
 
-  if (props.trackMetrics) {
-    circleData = props.getTrackData();
+  if (props.trackMetrics[props.trackMetricId]) {
+    circleData = props.getTrackData(props.trackMetricId);
 
     bubbleTitle = props.metricMetadata.items.filter(
       m => m.id === props.trackMetricId
@@ -21,7 +21,7 @@ const trackMetrics = props => {
 
     content = (
       <>
-        <button onClick={props.handleBubbles}>Change Bubbles</button>
+        <button onClick={props.handleTrackIdChange}>Change Bubbles</button>
         <h1 className="TrackMetrics__metrics-title">{bubbleTitle}</h1>
         <BubbleChart className="BubbleChart" data={circleData} />
       </>
