@@ -30,6 +30,7 @@ class App extends Component {
     super(props);
     this.emitDebouncedSearch = debounce(this.handleArtistSearch, 500);
   }
+
   //Search Artis Event Handlers
   handleArtistChange = event => {
     this.emitDebouncedSearch(event.target.value);
@@ -120,7 +121,6 @@ class App extends Component {
             metrics: response.data,
             metricId: response.data.data[0].metricId
           });
-          //console.log("metrics", response.data);
         }
       })
       .catch(error => console.log(error, "grabArtistMetric"));
@@ -135,7 +135,6 @@ class App extends Component {
       .get(`artists/${this.state.artistId}/`)
       .then(response => {
         if (response) {
-          //console.log("artistinfo", response.data);
           this.setState({ artistInfo: response.data });
         }
       })
@@ -144,66 +143,45 @@ class App extends Component {
 
   //Grab Artist Track Metrics
   grabTrackMetrics() {
+    // cancel the previous request
+    if (typeof this._source != typeof undefined) {
+      this._source.cancel("Operation canceled due to new request.");
+    }
+    // save the new request for cancellation
+    this._source = axios.CancelToken.source();
+
     //set track Metrics to null when searching new metrics.
     this.setState({ trackMetrics: {} });
 
-    //grab track metrics in order.
-    axios
-      .get(`metrics/v1/entity/${this.state.artistId}/nestedAssets?metric=410`)
-      .then(response => {
-        console.log("track metric410", response.data);
-        const tMetric = { ...this.state.trackMetrics };
-        //if theres no track metrics. API returns empty array. set trackMetrics state null
-        if (!response.data.data) {
-          tMetric[410] = null;
-        } else {
-          tMetric[410] = response.data;
-        }
-        this.setState({ trackMetrics: tMetric });
-        return axios.get(
-          `metrics/v1/entity/${this.state.artistId}/nestedAssets?metric=411`
-        );
-      })
-      .then(response => {
-        console.log("track metric411", response.data);
-        const tMetric = { ...this.state.trackMetrics };
-        //if theres no track metrics. API returns empty array. set trackMetrics state null
-        if (!response.data.data) {
-          tMetric[411] = null;
-        } else {
-          tMetric[411] = response.data;
-        }
-        this.setState({ trackMetrics: tMetric });
-        return axios.get(
-          `metrics/v1/entity/${this.state.artistId}/nestedAssets?metric=413`
-        );
-      })
-      .then(response => {
-        console.log("track metric413", response.data);
-        const tMetric = { ...this.state.trackMetrics };
-        //if theres no track metrics. API returns empty array. set trackMetrics state null
-        if (!response.data.data) {
-          tMetric[413] = null;
-        } else {
-          tMetric[413] = response.data;
-        }
-        this.setState({ trackMetrics: tMetric });
-        return axios.get(
-          `metrics/v1/entity/${this.state.artistId}/nestedAssets?metric=414`
-        );
-      })
-      .then(response => {
-        console.log("track metric414", response.data);
-        const tMetric = { ...this.state.trackMetrics };
-        //if theres no track metrics. API returns empty array. set trackMetrics state null
-        if (!response.data.data) {
-          tMetric[414] = null;
-        } else {
-          tMetric[414] = response.data;
-        }
-        this.setState({ trackMetrics: tMetric });
-      })
-      .catch(error => console.log(error, "grabTrackMetrics"));
+    //metric ids that are used to call track metric API
+    let metricNum = [410, 411, 413, 414];
+
+    metricNum.forEach(mId => {
+      axios
+        .get(
+          `metrics/v1/entity/${this.state.artistId}/nestedAssets?metric=${mId}`,
+          // cancel token used by axios
+          { cancelToken: this._source.token }
+        )
+        .then(response => {
+          console.log(`track metric${mId}`, response.data);
+          const tMetric = { ...this.state.trackMetrics };
+          //if theres no track metrics. API returns empty array. set trackMetrics state null
+          if (!response.data.data) {
+            tMetric[mId] = null;
+          } else {
+            tMetric[mId] = response.data;
+          }
+          this.setState({ trackMetrics: tMetric });
+        })
+        .catch(error => {
+          if (axios.isCancel(error)) {
+            console.log("Request canceled", error);
+          } else {
+            console.log(error);
+          }
+        });
+    });
   }
 
   //Filters through an array of metric arrays and returns matching metric ID to pass to barChart component.
