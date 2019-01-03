@@ -10,7 +10,7 @@ const width = 800 - margin.left - margin.right;
 const simulation = d3
   .forceSimulation()
   .force("center", d3.forceCenter(width / 2, height / 2))
-  .force("charge", d3.forceManyBody().strength(180));
+  .force("charge", d3.forceManyBody().strength(150));
 
 class BubbleChart extends Component {
   state = {
@@ -92,27 +92,34 @@ class BubbleChart extends Component {
     this.nodeEnter = this.node.enter().append("g");
     this.circles = this.nodeEnter.append("circle");
     this.label = this.nodeEnter.append("text");
+    this.val = this.nodeEnter.append("text");
 
     //ENTER + UPDATE
     this.node = this.nodeEnter.merge(this.node);
+    //console.log(this.label, this.node.select("text"));
     this.node
       .select("circle")
+      .attr("y", 1)
       .attr("r", d => this.state.rScale(d.value))
       .attr("fill", d => this.state.cScale(d.name));
-    this.node
-      .select("text")
+    this.label
       .attr("text-anchor", "middle")
       .attr("font-size", d => this.state.rScale(d.value) / 4)
       .attr("fill", "black")
       .attr("font-family", "'Pragati Narrow', sans-serif")
       .text(d => {
-        //this is some cutting edge stuff..
-        //i didn't want to spend too much time messing with text size to fit bubbles.
-        //will refactor this when i have more time.
+        //saving time instead of focusing on how to get text to wrap.
         if (d.name.length > 17 && this.state.rScale(d.value) / 3 > 17)
           return d.name.substring(0, 17);
         return d.name.substring(0, this.state.rScale(d.value) / 3);
       });
+    this.val
+      .attr("text-anchor", "middle")
+      .attr("font-size", d => this.state.rScale(d.value) / 4)
+      .attr("dy", "1em")
+      .attr("fill", "black")
+      .attr("font-family", "'Pragati Narrow', sans-serif")
+      .text(d => d3.format(",")(d.value));
   }
 
   //update positioning of group every tick.

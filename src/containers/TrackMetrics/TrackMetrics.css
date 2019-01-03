@@ -30,6 +30,10 @@
   align-items: center;
 }
 
+.TrackMetrics__metrics-title {
+  margin-bottom: 0.3em;
+}
+
 /* .BubbleChart {
   font-family: 'Pragati Narrow', sans-serif;
   font-family: "Work Sans", sans-serif;

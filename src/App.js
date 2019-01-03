@@ -178,9 +178,8 @@ class App extends Component {
     }
   };
 
-  //get clean track data.
+  //get track data
   getTrackData = () => {
-    //redo this.
     if (this.state.trackMetrics) {
       return this.state.trackMetrics.data.filter(data => {
         return data.summary.TW;
@@ -212,6 +211,7 @@ class App extends Component {
       metrics,
       metricId,
       metricMetadata,
+      trackMetricId,
       trackMetrics,
       isLoaded,
       startDate,
@@ -241,6 +241,8 @@ class App extends Component {
 
               <TrackMetrics
                 isLoaded={isLoaded}
+                metricMetadata={metricMetadata}
+                trackMetricId={trackMetricId}
                 trackMetrics={trackMetrics}
                 getTrackData={this.getTrackData}
                 handleBubbles={this.handleBubbles}
