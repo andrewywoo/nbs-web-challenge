@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/nbs-web-challenge/precache-manifest.29a4547421213cbb5afa3a93b4006e12.js"
+  "/nbs-web-challenge/precache-manifest.7d706d9e49d4d725428f06586345963e.js"
 );
 
 workbox.clientsClaim();
