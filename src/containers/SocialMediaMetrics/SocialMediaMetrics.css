@@ -17,6 +17,7 @@
   width: 400px;
   display: block;
   font-size: 3rem;
+  font-family: "Work Sans", sans-serif;
   transform: translate(-42%, 250px) rotate(-90deg);
   color: #e2e2d9;
 }
