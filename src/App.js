@@ -196,7 +196,9 @@ class App extends Component {
 
   onRangeChange = e => {
     //manage dates with moment js. convert to unix time format. set state for endDate-startDate
-    this.setState({ startDate: e[0], endDate: e[1] });
+    if (this.state.startDate !== e[0] || this.state.endDate !== e[1]) {
+      this.setState({ startDate: e[0], endDate: e[1] });
+    }
   };
 
   //TODO - Bubble Handler

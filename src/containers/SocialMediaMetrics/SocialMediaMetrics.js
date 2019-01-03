@@ -47,11 +47,21 @@ const socialMediaMetrics = props => {
 
     content = (
       <>
+        <MetricViewBar
+          clicked={props.handleMetricIdChange}
+          metricNames={metricNames}
+        />
+        {/* {props.chartTitle} */}
         <BarChart
           chartData={data}
           startDate={props.startDate}
           endDate={props.endDate}
         />
+        <span>
+          {moment.unix(props.startDate).format("MMM Do YYYY")}
+          {"   -   "}
+          {moment.unix(props.endDate).format("MMM Do YYYY")}
+        </span>
         <Range
           className="range-slider"
           defaultValue={[props.startDate, props.endDate]}
@@ -61,10 +71,6 @@ const socialMediaMetrics = props => {
           allowCross={false}
           tipFormatter={value => moment.unix(value).format("MMM Do YYYY")}
           onAfterChange={props.onRangeChange}
-        />
-        <MetricViewBar
-          clicked={props.handleMetricIdChange}
-          metricNames={metricNames}
         />
       </>
     );
