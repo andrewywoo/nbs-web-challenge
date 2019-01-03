@@ -22,6 +22,8 @@ const socialMediaMetrics = props => {
   let data = null;
   let metricNames = null;
   let content = null;
+  let chartTitle = null;
+  let yLabel = null;
 
   if (props.isLoaded) {
     content = <Spinner />;
@@ -45,25 +47,33 @@ const socialMediaMetrics = props => {
         return a.id - b.id;
       });
 
+    chartTitle = metricNames.filter(name => name.id === props.metricId)[0]
+      .fullName;
+
+    let cArr = chartTitle.split(" ");
+    yLabel = cArr[cArr.length - 1];
+
     content = (
       <>
         <MetricViewBar
           clicked={props.handleMetricIdChange}
           metricNames={metricNames}
+          chartTitle={chartTitle}
         />
-        {/* {props.chartTitle} */}
+        <h1 style={{ marginBottom: ".3em" }}>{chartTitle}</h1>
         <BarChart
           chartData={data}
+          yLabel={yLabel}
           startDate={props.startDate}
           endDate={props.endDate}
         />
-        <span>
+        <span className="SocialMediaMetrics__metrics-date-range">
           {moment.unix(props.startDate).format("MMM Do YYYY")}
           {"   -   "}
           {moment.unix(props.endDate).format("MMM Do YYYY")}
         </span>
         <Range
-          className="range-slider"
+          className="SocialMediaMetrics__metrics-range-slider"
           defaultValue={[props.startDate, props.endDate]}
           min={startDateUnix}
           max={endDateUnix}

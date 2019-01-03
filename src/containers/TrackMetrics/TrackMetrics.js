@@ -15,7 +15,7 @@ const trackMetrics = props => {
     circleData = props.getTrackData();
     content = (
       <>
-        <BubbleChart data={circleData} />
+        <BubbleChart className="BubbleChart" data={circleData} />
         <button onClick={props.handleBubbles}>Change Bubbles</button>
       </>
     );

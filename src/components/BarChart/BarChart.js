@@ -2,11 +2,12 @@ import React, { Component } from "react";
 import Rect from "./Rect/Rect";
 import moment from "moment";
 import * as d3 from "d3";
+import "./BarChart.css";
 
 //setting up global values for svg height and width
-const margin = { left: 60, top: 20, right: 20, bottom: 50 };
-const height = 500 - margin.top - margin.bottom;
-const width = 700 - margin.left - margin.right;
+const margin = { left: 100, top: 20, right: 20, bottom: 50 };
+const height = 480 - margin.top - margin.bottom;
+const width = 800 - margin.left - margin.right;
 
 class BarChart extends Component {
   state = {
@@ -84,22 +85,24 @@ class BarChart extends Component {
 
   //happens once. render x and y axis on loadup.
   componentDidMount() {
-    d3.select(this.refs.xAxis)
-      .transition()
-      .duration(800)
-      .call(this.xAxis);
-    d3.select(this.refs.yAxis)
-      .transition()
-      .duration(800)
-      .call(this.yAxis);
+    this.drawAxis();
   }
 
   //update axis when component updates
   componentDidUpdate() {
+    this.drawAxis();
+  }
+
+  drawAxis() {
     d3.select(this.refs.xAxis)
       .transition()
       .duration(800)
-      .call(this.xAxis);
+      .call(this.xAxis)
+      .selectAll("text")
+      .style("text-anchor", "end")
+      .attr("dx", "-.8em")
+      .attr("dy", ".15em")
+      .attr("transform", "rotate(-65)");
     d3.select(this.refs.yAxis)
       .transition()
       .duration(800)
@@ -129,6 +132,16 @@ class BarChart extends Component {
           })}
           <g ref="xAxis" transform={`translate(0, ${height})`} />
           <g ref="yAxis" />
+
+          <text
+            className="BarChart-yLabel"
+            x={-(height / 2)}
+            y={-80}
+            transform="rotate(-90)"
+            textAnchor="middle"
+          >
+            {this.props.yLabel}
+          </text>
         </g>
       </svg>
     );

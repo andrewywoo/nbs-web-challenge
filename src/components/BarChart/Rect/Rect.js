@@ -16,7 +16,15 @@ class Rect extends Component {
     };
   }
 
+  componentDidMount() {
+    this.animateRect();
+  }
+
   componentDidUpdate() {
+    this.animateRect();
+  }
+
+  animateRect() {
     const { y, height } = this.state;
 
     let rect;
@@ -37,8 +45,6 @@ class Rect extends Component {
       .duration(800)
       .attr("y", y)
       .attr("height", height);
-
-    rect.exit().remove();
   }
 
   render() {

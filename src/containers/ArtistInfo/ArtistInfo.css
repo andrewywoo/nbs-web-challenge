@@ -16,15 +16,15 @@
   width: 400px;
   display: block;
   font-size: 3rem;
-  transform: translate(-42%, 50%) rotate(-90deg);
+  transform: translate(-42%, 65px) rotate(-90deg);
   color: #e6e3e3;
 }
 
 .ArtistInfo__info {
-  width: 85%;
+  width: 70%;
   height: 100%;
   display: flex;
   flex-flow: row;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
 }

@@ -7,14 +7,18 @@ const metricViewBar = props => {
   if (props.metricNames) {
     buttons = props.metricNames.map(obj => {
       return (
-        <button key={obj.id} onClick={props.clicked.bind(this, obj.id)}>
+        <button
+          key={obj.id}
+          className="MetricView__buttons"
+          onClick={props.clicked.bind(this, obj.id)}
+        >
           {obj.fullName}
         </button>
       );
     });
   }
 
-  return <div className="metric-view-bar">{buttons}</div>;
+  return <div className="MetricViews">{buttons}</div>;
 };
 
 export default metricViewBar;

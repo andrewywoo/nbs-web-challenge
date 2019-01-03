@@ -4,7 +4,7 @@ import * as d3 from "d3";
 //setting up global values for svg height and width
 const margin = { left: 20, top: 20, right: 20, bottom: 20 };
 const height = 600 - margin.top - margin.bottom;
-const width = 700 - margin.left - margin.right;
+const width = 800 - margin.left - margin.right;
 
 //setup the simulation for the bubbles to explode from the center on data change
 const simulation = d3
@@ -104,6 +104,7 @@ class BubbleChart extends Component {
       .attr("text-anchor", "middle")
       .attr("font-size", d => this.state.rScale(d.value) / 4)
       .attr("fill", "black")
+      .attr("font-family", "'Pragati Narrow', sans-serif")
       .text(d => {
         //this is some cutting edge stuff..
         //i didn't want to spend too much time messing with text size to fit bubbles.
