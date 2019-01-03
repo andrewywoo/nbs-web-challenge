@@ -10,7 +10,7 @@ const width = 800 - margin.left - margin.right;
 const simulation = d3
   .forceSimulation()
   .force("center", d3.forceCenter(width / 2, height / 2))
-  .force("charge", d3.forceManyBody().strength(150));
+  .force("charge", d3.forceManyBody().strength(200));
 
 class BubbleChart extends Component {
   state = {
