@@ -7,6 +7,7 @@ const trackMetrics = props => {
   let circleData = null;
   let content = null;
   let bubbleTitle = null;
+  let bubbleTitles = {};
 
   if (props.isLoaded) {
     content = <Spinner />;
@@ -19,9 +20,28 @@ const trackMetrics = props => {
       m => m.id === props.trackMetricId
     )[0].fullName;
 
+    //spot holder
+    bubbleTitles = props.metricMetadata.items.reduce((acc, m) => {
+      acc[m.id] = m.fullName;
+      return acc;
+    }, {});
+
     content = (
       <>
-        <button onClick={props.handleTrackIdChange}>Change Bubbles</button>
+        {props.trackMetrics[410] ? (
+          <button onClick={props.handleTrackIdChange.bind(this, 410)}>
+            Pandora Radio Plays
+          </button>
+        ) : (
+          "null"
+        )}
+        {props.trackMetrics[411] ? (
+          <button onClick={props.handleTrackIdChange.bind(this, 411)}>
+            Pandora Interactive Plays
+          </button>
+        ) : (
+          "null"
+        )}
         <h1 className="TrackMetrics__metrics-title">{bubbleTitle}</h1>
         <BubbleChart className="BubbleChart" data={circleData} />
       </>

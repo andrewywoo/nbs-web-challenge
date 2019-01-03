@@ -165,9 +165,9 @@ class App extends Component {
         const tMetric = { ...this.state.trackMetrics };
         //if theres no track metrics. API returns empty array. set trackMetrics state null
         if (!response.data.data) {
-          tMetric[410] = null;
+          tMetric[411] = null;
         } else {
-          tMetric[410] = response.data;
+          tMetric[411] = response.data;
         }
         this.setState({ trackMetrics: tMetric });
         return axios.get(
@@ -179,9 +179,9 @@ class App extends Component {
         const tMetric = { ...this.state.trackMetrics };
         //if theres no track metrics. API returns empty array. set trackMetrics state null
         if (!response.data.data) {
-          tMetric[410] = null;
+          tMetric[413] = null;
         } else {
-          tMetric[410] = response.data;
+          tMetric[413] = response.data;
         }
         this.setState({ trackMetrics: tMetric });
         return axios.get(
@@ -193,9 +193,9 @@ class App extends Component {
         const tMetric = { ...this.state.trackMetrics };
         //if theres no track metrics. API returns empty array. set trackMetrics state null
         if (!response.data.data) {
-          tMetric[410] = null;
+          tMetric[414] = null;
         } else {
-          tMetric[410] = response.data;
+          tMetric[414] = response.data;
         }
         this.setState({ trackMetrics: tMetric });
       })
@@ -261,7 +261,9 @@ class App extends Component {
   };
 
   handleTrackIdChange = id => {
-    this.setState({ bubbleData: [] });
+    if (this.state.trackMetricId !== id) {
+      this.setState({ trackMetricId: id });
+    }
   };
 
   render() {

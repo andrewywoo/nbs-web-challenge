@@ -31,6 +31,8 @@ class BubbleChart extends Component {
     });
 
     const top15 = sortedData.slice(0, 15);
+
+    console.log("top15", top15);
     //Update scales with new data
     rScale.domain(d3.extent(top15, d => d.summary.TW));
     cScale.domain(top15, d => d.metadata.asset_name);
@@ -77,7 +79,7 @@ class BubbleChart extends Component {
   }
 
   renderCircles() {
-    //console.log("renderCircles", this.state.circles);
+    console.log("renderCircles", this.state.circles);
 
     //JOIN
     this.node = d3
@@ -91,18 +93,21 @@ class BubbleChart extends Component {
     //ENTER
     this.nodeEnter = this.node.enter().append("g");
     this.circles = this.nodeEnter.append("circle");
-    this.label = this.nodeEnter.append("text");
-    this.val = this.nodeEnter.append("text");
+    this.label = this.nodeEnter.append("text").attr("id", "label");
+    this.val = this.nodeEnter.append("text").attr("id", "val");
 
     //ENTER + UPDATE
     this.node = this.nodeEnter.merge(this.node);
-    //console.log(this.label, this.node.select("text"));
     this.node
       .select("circle")
       .attr("y", 1)
       .attr("r", d => this.state.rScale(d.value))
       .attr("fill", d => this.state.cScale(d.name));
-    this.label
+
+    //ENTER + UPDATE
+    this.node = this.nodeEnter.merge(this.node);
+    this.node
+      .select("#label")
       .attr("text-anchor", "middle")
       .attr("font-size", d => this.state.rScale(d.value) / 4)
       .attr("fill", "black")
@@ -113,7 +118,11 @@ class BubbleChart extends Component {
           return d.name.substring(0, 17);
         return d.name.substring(0, this.state.rScale(d.value) / 3);
       });
-    this.val
+
+    //ENTER + UPDATE
+    this.node = this.nodeEnter.merge(this.node);
+    this.node
+      .select("#val")
       .attr("text-anchor", "middle")
       .attr("font-size", d => this.state.rScale(d.value) / 4)
       .attr("dy", "1em")
