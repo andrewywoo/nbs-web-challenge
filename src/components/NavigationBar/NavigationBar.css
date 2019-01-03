@@ -5,18 +5,27 @@
   align-items: center;
   position: fixed;
   width: 100%;
-  height: 45px;
+  height: 50px;
   top: 0;
   left: 0;
   background: #f9f1f1;
   z-index: 100;
 }
 
-.artistSearchInput {
+.NavigationBar__input {
   height: 30px;
-  width: 250px;
-  margin: 12px;
+  width: 280px;
+  margin: 0 18px;
+  padding: 0 0.8rem;
   font-size: 1.15rem;
+  border: none;
+  border-radius: 0.4rem;
+  transition: box-shadow 300ms;
+}
+
+.NavigationBar__input:focus {
+  outline: none;
+  box-shadow: 0.2rem 0.8rem 1.6rem #ccc;
 }
 
 .NavigationBar__links {
@@ -49,7 +58,7 @@
   cursor: pointer;
   align-items: center;
   padding: 0 5px;
-  font-weight: bold;
+  /* font-weight: bold; */
 }
 
 .NavigationBar__href:hover,

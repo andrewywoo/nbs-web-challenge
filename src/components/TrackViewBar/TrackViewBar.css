@@ -1,4 +1,5 @@
 .TrackViews {
   display: flex;
-  height: 51px;
+  flex-flow: row nowrap;
+  height: 60px;
 }

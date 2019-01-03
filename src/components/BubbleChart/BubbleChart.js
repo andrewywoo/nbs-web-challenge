@@ -25,14 +25,13 @@ class BubbleChart extends Component {
     const { data } = nextProps;
     const { rScale, cScale } = prevState;
 
-    //filter top 10
+    //filter top 15
     let sortedData = data.sort((a, b) => {
       return b.summary.TW - a.summary.TW;
     });
 
     const top15 = sortedData.slice(0, 15);
 
-    console.log("top15", top15);
     //Update scales with new data
     rScale.domain(d3.extent(top15, d => d.summary.TW));
     cScale.domain(top15, d => d.metadata.asset_name);
@@ -43,6 +42,10 @@ class BubbleChart extends Component {
     });
 
     return { circles };
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return true;
   }
 
   componentDidMount() {
@@ -79,7 +82,7 @@ class BubbleChart extends Component {
   }
 
   renderCircles() {
-    console.log("renderCircles", this.state.circles);
+    //console.log("renderCircles", this.state.circles);
 
     //JOIN
     this.node = d3

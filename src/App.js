@@ -22,7 +22,7 @@ class App extends Component {
       .subtract(5, "y")
       .unix(),
     endDate: moment(new Date()).unix(),
-    bubbleData: [],
+    trackDateRange: "TW",
     isLoaded: false
   };
 
@@ -235,6 +235,12 @@ class App extends Component {
     }
   };
 
+  handleTrackDateRangeChange = dtRange => {
+    if (this.state.trackDateRange !== dtRange) {
+      this.setState({ trackDateRange: dtRange });
+    }
+  };
+
   render() {
     let {
       artistInfo,
@@ -245,7 +251,8 @@ class App extends Component {
       trackMetrics,
       isLoaded,
       startDate,
-      endDate
+      endDate,
+      trackDateRange
     } = this.state;
 
     return (
@@ -276,6 +283,8 @@ class App extends Component {
                 trackMetrics={trackMetrics}
                 getTrackData={this.getTrackData}
                 handleTrackIdChange={this.handleTrackIdChange}
+                handleTrackDateRangeChange={this.handleTrackDateRangeChange}
+                trackDateRange={trackDateRange}
               />
             </>
           ) : null}

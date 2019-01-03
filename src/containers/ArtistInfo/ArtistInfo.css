@@ -5,7 +5,7 @@
   flex-flow: row;
   align-items: center;
   background: #f9f9f9;
-  padding-top: 45px;
+  padding-top: 50px;
 }
 
 .ArtistInfo__label {
@@ -22,7 +22,7 @@
 }
 
 .ArtistInfo__info {
-  width: 70%;
+  width: 960px;
   height: 100%;
   display: flex;
   flex-flow: row;

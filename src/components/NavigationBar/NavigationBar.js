@@ -7,7 +7,7 @@ const navigationBar = props => {
       <div className="NavigationBar__search-bar">
         <input
           id="search"
-          className="artistSearchInput"
+          className="NavigationBar__input"
           type="text"
           placeholder="Search For An Artist"
           onChange={props.handleArtistChange}

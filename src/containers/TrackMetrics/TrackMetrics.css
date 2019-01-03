@@ -1,11 +1,11 @@
 .TrackMetrics {
   width: 100%;
-  height: 740px;
+  height: 800px;
   display: flex;
   flex-flow: row;
   align-items: center;
   background: #fbf7f5;
-  padding-top: 45px;
+  padding-top: 50px;
 }
 
 .TrackMetrics__label {
@@ -23,7 +23,7 @@
 }
 
 .TrackMetrics__metrics {
-  width: 70%;
+  width: 960px;
   height: 100%;
   display: flex;
   flex-flow: column;
@@ -32,7 +32,20 @@
 }
 
 .TrackMetrics__metrics-title {
-  margin-bottom: 0.3em;
+  margin-bottom: 0;
+}
+
+.TrackMetrics__metrics-range {
+  margin: 0;
+}
+
+.TrackMetrics__section {
+  display: flex;
+  flex-flow: row nowrap;
+  height: 100%;
+}
+.TrackMetrics__section-range {
+  width: 100px;
 }
 
 /* .BubbleChart {

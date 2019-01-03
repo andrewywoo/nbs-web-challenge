@@ -5,7 +5,7 @@
   flex-flow: row;
   align-items: center;
   background: #fffff4;
-  padding-top: 45px;
+  padding-top: 50px;
 }
 
 .SocialMediaMetrics__label {
@@ -23,7 +23,7 @@
 }
 
 .SocialMediaMetrics__metrics {
-  width: 70%;
+  width: 960px;
   height: 100%;
   display: flex;
   flex-flow: column;

@@ -1,3 +1,5 @@
-.MetricView {
-  margin: 12px;
+.MetricViews {
+  display: flex;
+  flex-flow: row nowrap;
+  height: 60px;
 }

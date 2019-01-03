@@ -21,23 +21,21 @@ class BarChart extends Component {
       .paddingInner(0.1)
       .paddingOuter(0),
     accentScale: d3.scaleSequential(d3.interpolateRdBu),
-    yExtent: null
+    yExtent: null,
+    metricId: null,
+    startDate: null,
+    endDate: null
   };
 
   //setting up axis and tick formats
   xAxis = d3.axisBottom(this.state.xScale).tickFormat(d3.timeFormat("%b-%Y"));
   yAxis = d3.axisLeft(this.state.yScale);
-  //.ticks(4)
-  //.tickFormat(function(d) {
-  // return d;
-  //});
 
   static getDerivedStateFromProps(nextProps, prevState) {
     //console.log("getDerivedStateFromProps", nextProps, !nextProps);
     if (!nextProps) return null;
 
-    const { chartData, startDate, endDate } = nextProps;
-    //console.log(data);
+    const { chartData, startDate, endDate, metricId } = nextProps;
     const { xScale, yScale, wScale, accentScale } = prevState;
 
     //clean data
@@ -72,15 +70,21 @@ class BarChart extends Component {
       };
     });
 
-    return { bars, yScale };
+    return { bars, yScale, metricId, startDate, endDate };
   }
 
   //Only update barChart if data has been changed.
   shouldComponentUpdate(nextProps, nextState) {
-    //console.log("shouldComponentUpdate: this.state =", this.state);
-    //console.log("shouldComponentUpdate: nextSate =", nextState);
-    //console.log(this.state.bars !== nextState.bars);
-    return true;
+    //console.log("shouldComponentUpdate", nextProps, this.state);
+    if (
+      nextProps.metricId === this.state.metricId &&
+      nextProps.startDate === this.state.startDate &&
+      nextProps.endDate === this.state.endDate
+    ) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   //happens once. render x and y axis on loadup.

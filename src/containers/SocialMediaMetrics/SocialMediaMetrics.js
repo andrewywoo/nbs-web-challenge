@@ -38,7 +38,6 @@ const socialMediaMetrics = props => {
       .reduce((acc, metric) => {
         //look up fullName for each existing metric for artist.
         let m = props.metricMetadata[metric.metricId];
-        console.log(m);
         if (m) {
           acc.push({ fullName: m.fullName, id: metric.metricId });
         }
@@ -65,6 +64,7 @@ const socialMediaMetrics = props => {
         <BarChart
           chartData={data}
           yLabel={yLabel}
+          metricId={props.metricId}
           startDate={props.startDate}
           endDate={props.endDate}
         />
