@@ -47,6 +47,7 @@
   height: 100%;
 }
 .TrackMetrics__section-range {
+  margin: 12px;
   width: 100px;
 }
 
