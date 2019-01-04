@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import * as d3 from "d3";
+import "./BubbleChart.css";
 
 //setting up global values for svg height and width
 const margin = { left: 20, top: 20, right: 20, bottom: 20 };
@@ -94,6 +95,18 @@ class BubbleChart extends Component {
   renderCircles() {
     //console.log("renderCircles", this.state.circles);
 
+    var tooltip = d3
+      .select(this.refs.container)
+      .append("div")
+      .style("position", "absolute")
+      .style("z-index", "100")
+      .style("visibility", "hidden")
+      .style("border", "1px solid #fffff4")
+      .style("background", "#fffff4")
+      .style("border-radius", "4px")
+      .style("padding", "8px")
+      .style("font-size", "1.5rem");
+
     //JOIN
     this.node = d3
       .select(this.refs.svgContainer)
@@ -115,7 +128,17 @@ class BubbleChart extends Component {
       .select("circle")
       .attr("y", 1)
       .attr("r", d => this.state.rScale(d.value))
-      .attr("fill", d => this.state.cScale(d.name));
+      .attr("fill", d => this.state.cScale(d.name))
+      .on("mouseover", function(d) {
+        console.log(d);
+        return tooltip.text(d.name).style("visibility", "visible");
+      })
+      .on("mousemove", function(d) {
+        return tooltip.style("top", `${d.y}px`).style("left", `${d.x}px`);
+      })
+      .on("mouseout", function() {
+        return tooltip.style("visibility", "hidden");
+      });
 
     //ENTER + UPDATE
     this.node = this.nodeEnter.merge(this.node);
@@ -130,6 +153,16 @@ class BubbleChart extends Component {
         if (d.name.length > 17 && this.state.rScale(d.value) / 3 > 17)
           return d.name.substring(0, 17);
         return d.name.substring(0, this.state.rScale(d.value) / 3);
+      })
+      .on("mouseover", function(d) {
+        console.log(d);
+        return tooltip.text(d.name).style("visibility", "visible");
+      })
+      .on("mousemove", function(d) {
+        return tooltip.style("top", `${d.y}px`).style("left", `${d.x}px`);
+      })
+      .on("mouseout", function() {
+        return tooltip.style("visibility", "hidden");
       });
 
     //ENTER + UPDATE
@@ -141,7 +174,17 @@ class BubbleChart extends Component {
       .attr("dy", "1em")
       .attr("fill", "black")
       .attr("font-family", "'Pragati Narrow', sans-serif")
-      .text(d => d3.format(",")(d.value));
+      .text(d => d3.format(",")(d.value))
+      .on("mouseover", function(d) {
+        console.log(d);
+        return tooltip.text(d.name).style("visibility", "visible");
+      })
+      .on("mousemove", function(d) {
+        return tooltip.style("top", `${d.y}px`).style("left", `${d.x}px`);
+      })
+      .on("mouseout", function() {
+        return tooltip.style("visibility", "hidden");
+      });
   }
 
   //update positioning of group every tick.
@@ -150,7 +193,11 @@ class BubbleChart extends Component {
   };
 
   render() {
-    return <svg ref="svgContainer" width={width} height={height} />;
+    return (
+      <div className="BubbleContainer" ref="container">
+        <svg ref="svgContainer" width={width} height={height} />
+      </div>
+    );
   }
 }
 

@@ -1,0 +1,8 @@
+.SplashPage {
+  margin: 50px;
+}
+
+.SplashPage p {
+  font-size: 3rem;
+  font-family: "Permanent Marker", cursive;
+}

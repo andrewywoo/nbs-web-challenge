@@ -15,7 +15,7 @@ const trackViewBar = props => {
           {props.metricMetadata[410].fullName}
         </button>
       ) : (
-        <Spinner />
+        <Spinner style={style} />
       )}
       {props.trackMetrics[411] ? (
         <button onClick={props.handleTrackIdChange.bind(this, 411)}>

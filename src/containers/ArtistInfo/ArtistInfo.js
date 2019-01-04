@@ -24,16 +24,20 @@ const artistInfo = props => {
     name = <h1>{props.artistInfo.name}</h1>;
     genre = <h2>{props.artistInfo.genres.join(" - ")}</h2>;
     recordLabels = <p>{props.artistInfo.recordLabels.join(" - ")}</p>;
-    monthlyActiveListeners = (
-      <p>
-        {formatter(
-          props.artistInfo.pandoraAudience.monthlyActiveListeners.total
-        )}
-      </p>
-    );
-    streams = (
-      <p>{formatter(props.artistInfo.pandoraAudience.streams.total)}</p>
-    );
+    if (props.artistInfo.pandoraAudience.monthlyActiveListeners) {
+      monthlyActiveListeners = (
+        <p>
+          {formatter(
+            props.artistInfo.pandoraAudience.monthlyActiveListeners.total
+          )}
+        </p>
+      );
+    }
+    if (props.artistInfo.pandoraAudience.streams) {
+      streams = (
+        <p>{formatter(props.artistInfo.pandoraAudience.streams.total)}</p>
+      );
+    }
 
     content = (
       <>

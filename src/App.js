@@ -7,6 +7,7 @@ import ArtistInfo from "./containers/ArtistInfo/ArtistInfo";
 import SocialMediaMetrics from "./containers/SocialMediaMetrics/SocialMediaMetrics";
 import TrackMetrics from "./containers/TrackMetrics/TrackMetrics";
 import moment from "moment";
+import SplashPage from "./components/UI/SplashPage/SplashPage";
 
 class App extends Component {
   state = {
@@ -23,7 +24,8 @@ class App extends Component {
       .unix(),
     endDate: moment(new Date()).unix(),
     trackDateRange: "TW",
-    isLoaded: false
+    isLoaded: false,
+    isTrackMetricLoading: true
   };
 
   constructor(props) {
@@ -151,7 +153,7 @@ class App extends Component {
     this._source = axios.CancelToken.source();
 
     //set track Metrics to null when searching new metrics.
-    this.setState({ trackMetrics: {} });
+    this.setState({ trackMetrics: {}, isTrackMetricLoading: true });
 
     //metric ids that are used to call track metric API
     let metricNum = [410, 411, 413, 414];
@@ -171,6 +173,12 @@ class App extends Component {
             tMetric[mId] = null;
           } else {
             tMetric[mId] = response.data;
+            if (this.state.isTrackMetricLoading) {
+              this.setState({
+                isTrackMetricLoading: false,
+                trackMetricId: mId
+              });
+            }
           }
           this.setState({ trackMetrics: tMetric });
         })
@@ -231,6 +239,12 @@ class App extends Component {
 
   handleTrackIdChange = id => {
     if (this.state.trackMetricId !== id) {
+      //trackId 413 and 414 don't have LTD data. Switch to TW.
+      if (id === 413 || id === 414) {
+        if (this.state.trackDateRange === "LTD") {
+          this.setState({ trackDateRange: "TW" });
+        }
+      }
       this.setState({ trackMetricId: id });
     }
   };
@@ -290,7 +304,9 @@ class App extends Component {
                 artistId={artistId}
               />
             </>
-          ) : null}
+          ) : (
+            <SplashPage />
+          )}
         </div>
       </>
     );

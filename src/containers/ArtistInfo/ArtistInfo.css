@@ -36,6 +36,7 @@
 }
 
 .ArtistInfo__info-bio {
+  width: 60%;
   display: flex;
   flex-flow: row;
 }
