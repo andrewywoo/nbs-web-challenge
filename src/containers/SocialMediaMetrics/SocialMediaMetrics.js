@@ -67,6 +67,7 @@ const socialMediaMetrics = props => {
           metricId={props.metricId}
           startDate={props.startDate}
           endDate={props.endDate}
+          artistId={props.artistId}
         />
         <span className="SocialMediaMetrics__metrics-date-range">
           {moment.unix(props.startDate).format("MMM Do YYYY")}

@@ -24,7 +24,8 @@ class BarChart extends Component {
     yExtent: null,
     metricId: null,
     startDate: null,
-    endDate: null
+    endDate: null,
+    artistId: null
   };
 
   //setting up axis and tick formats
@@ -35,7 +36,7 @@ class BarChart extends Component {
     //console.log("getDerivedStateFromProps", nextProps, !nextProps);
     if (!nextProps) return null;
 
-    const { chartData, startDate, endDate, metricId } = nextProps;
+    const { chartData, startDate, endDate, metricId, artistId } = nextProps;
     const { xScale, yScale, wScale, accentScale } = prevState;
 
     //clean data
@@ -70,21 +71,18 @@ class BarChart extends Component {
       };
     });
 
-    return { bars, yScale, metricId, startDate, endDate };
+    return { bars, yScale, metricId, startDate, endDate, artistId };
   }
 
   //Only update barChart if data has been changed.
   shouldComponentUpdate(nextProps, nextState) {
     //console.log("shouldComponentUpdate", nextProps, this.state);
-    if (
-      nextProps.metricId === this.state.metricId &&
-      nextProps.startDate === this.state.startDate &&
-      nextProps.endDate === this.state.endDate
-    ) {
-      return false;
-    } else {
-      return true;
-    }
+    return (
+      nextProps.metricId !== this.state.metricId ||
+      nextProps.startDate !== this.state.startDate ||
+      nextProps.endDate !== this.state.endDate ||
+      nextProps.artistId !== this.state.artistId
+    );
   }
 
   //happens once. render x and y axis on loadup.

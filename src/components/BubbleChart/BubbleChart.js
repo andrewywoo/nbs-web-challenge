@@ -16,36 +16,46 @@ class BubbleChart extends Component {
   state = {
     circles: [],
     rScale: d3.scaleLinear().range([30, 125]),
-    cScale: d3.scaleOrdinal(d3.schemePaired)
+    cScale: d3.scaleOrdinal(d3.schemePaired),
+    trackDateRange: null,
+    trackMetricId: null,
+    artistId: null
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
     //console.log("getDerivedStateFromProps", nextProps,prevState);
     if (!nextProps) return null;
-    const { data } = nextProps;
+    const { data, trackDateRange, trackMetricId, artistId } = nextProps;
     const { rScale, cScale } = prevState;
 
     //filter top 15
-    let sortedData = data.sort((a, b) => {
-      return b.summary.TW - a.summary.TW;
-    });
-
-    const top15 = sortedData.slice(0, 15);
+    let top15 = data
+      .sort((a, b) => {
+        return b.summary[trackDateRange] - a.summary[trackDateRange];
+      })
+      .slice(0, 15);
 
     //Update scales with new data
-    rScale.domain(d3.extent(top15, d => d.summary.TW));
+    rScale.domain(d3.extent(top15, d => d.summary[trackDateRange]));
     cScale.domain(top15, d => d.metadata.asset_name);
 
     //create data for circles
     const circles = top15.map(data => {
-      return { name: data.metadata.asset_name, value: data.summary.TW };
+      return {
+        name: data.metadata.asset_name,
+        value: data.summary[trackDateRange]
+      };
     });
 
-    return { circles };
+    return { circles, trackDateRange, trackMetricId, artistId };
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return true;
+    return (
+      nextProps.trackDateRange !== this.state.trackDateRange ||
+      nextProps.trackMetricId !== this.state.trackMetricId ||
+      nextProps.artistId !== this.state.artistId
+    );
   }
 
   componentDidMount() {

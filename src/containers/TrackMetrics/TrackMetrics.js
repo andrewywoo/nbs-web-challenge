@@ -46,6 +46,7 @@ const trackMetrics = props => {
             <TrackDateRange
               handleTrackDateRangeChange={props.handleTrackDateRangeChange}
               dateRangeDict={dateRangeDict}
+              trackMetricId={props.trackMetricId}
             />
           </div>
           <div>
@@ -53,6 +54,8 @@ const trackMetrics = props => {
               className="BubbleChart"
               data={circleData}
               trackDateRange={props.trackDateRange}
+              trackMetricId={props.trackMetricId}
+              artistId={props.artistId}
             />
           </div>
         </div>
@@ -61,12 +64,12 @@ const trackMetrics = props => {
   }
 
   return (
-    <section id="trackSpins" className="TrackMetrics">
+    <div id="trackSpins" className="TrackMetrics">
       <div className="TrackMetrics__label">
         <span>Track Spins</span>
       </div>
       <div className="TrackMetrics__metrics">{content}</div>
-    </section>
+    </div>
   );
 };
 

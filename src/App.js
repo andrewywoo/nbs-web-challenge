@@ -211,7 +211,7 @@ class App extends Component {
   getTrackData = id => {
     if (this.state.trackMetrics[id]) {
       return this.state.trackMetrics[id].data.filter(data => {
-        return data.summary.TW;
+        return data.summary[this.state.trackDateRange];
       });
     }
   };
@@ -243,6 +243,7 @@ class App extends Component {
 
   render() {
     let {
+      artistId,
       artistInfo,
       metrics,
       metricId,
@@ -274,6 +275,7 @@ class App extends Component {
                 metricId={metricId}
                 startDate={startDate}
                 endDate={endDate}
+                artistId={artistId}
               />
 
               <TrackMetrics
@@ -285,6 +287,7 @@ class App extends Component {
                 handleTrackIdChange={this.handleTrackIdChange}
                 handleTrackDateRangeChange={this.handleTrackDateRangeChange}
                 trackDateRange={trackDateRange}
+                artistId={artistId}
               />
             </>
           ) : null}
