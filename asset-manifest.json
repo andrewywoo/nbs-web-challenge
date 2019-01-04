@@ -1,15 +1,15 @@
 {
   "main.css": "/nbs-web-challenge/static/css/main.5f9cc736.chunk.css",
-  "main.js": "/nbs-web-challenge/static/js/main.1eb7e863.chunk.js",
-  "main.js.map": "/nbs-web-challenge/static/js/main.1eb7e863.chunk.js.map",
+  "main.js": "/nbs-web-challenge/static/js/main.3f7a6858.chunk.js",
+  "main.js.map": "/nbs-web-challenge/static/js/main.3f7a6858.chunk.js.map",
   "static/css/1.9c1170bb.chunk.css": "/nbs-web-challenge/static/css/1.9c1170bb.chunk.css",
-  "static/js/1.5f9da20b.chunk.js": "/nbs-web-challenge/static/js/1.5f9da20b.chunk.js",
-  "static/js/1.5f9da20b.chunk.js.map": "/nbs-web-challenge/static/js/1.5f9da20b.chunk.js.map",
+  "static/js/1.61bcd675.chunk.js": "/nbs-web-challenge/static/js/1.61bcd675.chunk.js",
+  "static/js/1.61bcd675.chunk.js.map": "/nbs-web-challenge/static/js/1.61bcd675.chunk.js.map",
   "runtime~main.js": "/nbs-web-challenge/static/js/runtime~main.5068634b.js",
   "runtime~main.js.map": "/nbs-web-challenge/static/js/runtime~main.5068634b.js.map",
   "static/css/main.5f9cc736.chunk.css.map": "/nbs-web-challenge/static/css/main.5f9cc736.chunk.css.map",
   "static/css/1.9c1170bb.chunk.css.map": "/nbs-web-challenge/static/css/1.9c1170bb.chunk.css.map",
   "index.html": "/nbs-web-challenge/index.html",
-  "precache-manifest.3abd1b3b3b26195c1873ce7b086c0816.js": "/nbs-web-challenge/precache-manifest.3abd1b3b3b26195c1873ce7b086c0816.js",
+  "precache-manifest.904a33e4207d8d261cc989fc9bca022c.js": "/nbs-web-challenge/precache-manifest.904a33e4207d8d261cc989fc9bca022c.js",
   "service-worker.js": "/nbs-web-challenge/service-worker.js"
 }
