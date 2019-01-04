@@ -1,3 +1,7 @@
+.BarChart {
+  position: relative;
+}
+
 .BarChart-yLabel {
   font-size: 1.8em;
 }

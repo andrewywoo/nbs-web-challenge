@@ -6,8 +6,8 @@ import "./Tooltip.css";
 const toolTip = props => {
   const { xScale, yScale } = props;
   const styles = {
-    left: props.hoveredBar.x + 150,
-    top: props.hoveredBar.y + 610
+    left: props.hoveredBar.x,
+    top: props.hoveredBar.y
   };
 
   return (

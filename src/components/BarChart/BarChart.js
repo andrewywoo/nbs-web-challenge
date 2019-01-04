@@ -123,7 +123,7 @@ class BarChart extends Component {
 
   render() {
     return (
-      <div>
+      <div className="BarChart">
         <svg
           height={height + margin.top + margin.bottom}
           width={width + margin.left + margin.right}
