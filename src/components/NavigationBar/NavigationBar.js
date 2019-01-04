@@ -30,6 +30,14 @@ const navigationBar = props => {
               Track Spins
             </a>
           </li>
+          <li className="NavigationBar__li">
+            <a
+              href="https://github.com/andrewywoo/"
+              className="NavigationBar__href"
+            >
+              by awoo
+            </a>
+          </li>
         </ul>
       </div>
     </nav>
