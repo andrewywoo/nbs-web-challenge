@@ -55,6 +55,10 @@ const socialMediaMetrics = props => {
     let cArr = chartTitle.split(" ");
     yLabel = cArr[cArr.length - 1];
 
+    console.log(data);
+    //grab first date inside data.
+    let chartStartDate = moment(data[0].date).unix();
+
     content = (
       <>
         <MetricViewBar
@@ -73,7 +77,9 @@ const socialMediaMetrics = props => {
           artistId={props.artistId}
         />
         <span className="SocialMediaMetrics__metrics-date-range">
-          {moment.unix(props.startDate).format("MMM Do YYYY")}
+          {chartStartDate > props.startDate
+            ? moment.unix(chartStartDate).format("MMM Do YYYY")
+            : moment.unix(props.startDate).format("MMM Do YYYY")}
           {"   -   "}
           {moment.unix(props.endDate).format("MMM Do YYYY")}
           <FontAwesomeIcon
@@ -84,7 +90,7 @@ const socialMediaMetrics = props => {
         </span>
         <Range
           className="SocialMediaMetrics__metrics-range-slider"
-          defaultValue={[props.startDate, props.endDate]}
+          defaultValue={[chartStartDate, props.endDate]}
           min={startDateUnix}
           max={endDateUnix}
           step={86400 /*1 day in seconds*/}

@@ -217,6 +217,8 @@ class App extends Component {
         return { date: new Date(keys), value: data[keys] };
       });
 
+      //this.setState({ startDate: moment(chartData[0].date).unix() });
+
       return chartData;
     }
   };
