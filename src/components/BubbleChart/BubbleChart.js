@@ -133,7 +133,6 @@ class BubbleChart extends Component {
       .attr("r", d => this.state.rScale(d.value))
       .attr("fill", d => this.state.cScale(d.name))
       .on("mouseover", function(d) {
-        console.log(d);
         // return tooltip.text(d.name).style("visibility", "visible");
         return tooltip
           .html(`<p>${d.name}</p><p>${formatCommas(d.value)}</p>`)
