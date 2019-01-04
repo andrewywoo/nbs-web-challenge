@@ -164,7 +164,7 @@ class App extends Component {
           { cancelToken: this._source.token }
         )
         .then(response => {
-          console.log(`track metric${mId}`, response.data);
+          //console.log(`track metric${mId}`, response.data);
           const tMetric = { ...this.state.trackMetrics };
           //if theres no track metrics. API returns empty array. set trackMetrics state null
           if (!response.data.data) {

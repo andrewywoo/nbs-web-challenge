@@ -9,7 +9,7 @@
 }
 
 .ArtistInfo__label {
-  width: 15%;
+  width: 80px;
   height: 100%;
 }
 .ArtistInfo__label span {
@@ -28,4 +28,5 @@
   flex-flow: row;
   justify-content: center;
   align-items: center;
+  margin: auto;
 }

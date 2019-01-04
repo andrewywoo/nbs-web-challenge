@@ -27,7 +27,7 @@ const trackMetrics = props => {
   if (props.trackMetrics[props.trackMetricId]) {
     //grab bubble chart data with new metric id.
     circleData = props.getTrackData(props.trackMetricId);
-    console.log(circleData);
+
     //grab chart title from metric dictionary.
     bubbleTitle = props.metricMetadata[props.trackMetricId].fullName;
     dateRangeTitle = dateRangeDict[props.trackDateRange];

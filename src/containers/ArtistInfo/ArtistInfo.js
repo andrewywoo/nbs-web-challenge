@@ -18,8 +18,8 @@ const artistInfo = props => {
     image = (
       <img height="100" src={props.artistInfo.images[0][100]} alt="Artist" />
     );
-    info = <h1>Artist Name: {props.artistInfo.name}</h1>;
-    genre = <h2>Genre: {props.artistInfo.genres.join(" ")}</h2>;
+    info = <h1>{props.artistInfo.name}</h1>;
+    genre = <h2>{props.artistInfo.genres.join(" ")}</h2>;
 
     content = (
       <>

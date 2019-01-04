@@ -9,7 +9,7 @@
 }
 
 .SocialMediaMetrics__label {
-  width: 15%;
+  width: 80px;
   height: 100%;
 }
 
@@ -29,6 +29,7 @@
   flex-flow: column;
   justify-content: center;
   align-items: center;
+  margin: auto;
 }
 
 .SocialMediaMetrics__metrics-date-range {

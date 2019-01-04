@@ -3,6 +3,7 @@ import Rect from "./Rect/Rect";
 import moment from "moment";
 import * as d3 from "d3";
 import "./BarChart.css";
+import Tooltip from "../Tooltip/Tooltip";
 
 //setting up global values for svg height and width
 const margin = { left: 100, top: 20, right: 20, bottom: 50 };
@@ -25,7 +26,8 @@ class BarChart extends Component {
     metricId: null,
     startDate: null,
     endDate: null,
-    artistId: null
+    artistId: null,
+    hoveredBar: null
   };
 
   //setting up axis and tick formats
@@ -81,7 +83,8 @@ class BarChart extends Component {
       nextProps.metricId !== this.state.metricId ||
       nextProps.startDate !== this.state.startDate ||
       nextProps.endDate !== this.state.endDate ||
-      nextProps.artistId !== this.state.artistId
+      nextProps.artistId !== this.state.artistId ||
+      nextState.hoveredBar !== this.state.hoveredBar
     );
   }
 
@@ -91,7 +94,7 @@ class BarChart extends Component {
   }
 
   //update axis when component updates
-  componentDidUpdate() {
+  componentDidUpdate(prevProps, prevState) {
     this.drawAxis();
   }
 
@@ -111,41 +114,58 @@ class BarChart extends Component {
       .call(this.yAxis);
   }
 
+  onMouseOverCallback = d => {
+    this.setState({ hoveredBar: d });
+  };
+  onMouseOutCallback = d => {
+    this.setState({ hoveredBar: null });
+  };
+
   render() {
     return (
-      <svg
-        height={height + margin.top + margin.bottom}
-        width={width + margin.left + margin.right}
-      >
-        <g transform={`translate(${margin.left},${margin.top})`}>
-          {this.state.bars.map((d, i) => {
-            return (
-              <Rect
-                key={i}
-                x={d.x}
-                y={d.y}
-                height={d.height}
-                width={this.state.wScale.bandwidth()}
-                fill={d.fill}
-                yScale={this.state.yScale}
-                // yExtent={this.state.yExtent}
-              />
-            );
-          })}
-          <g ref="xAxis" transform={`translate(0, ${height})`} />
-          <g ref="yAxis" />
+      <div>
+        <svg
+          height={height + margin.top + margin.bottom}
+          width={width + margin.left + margin.right}
+        >
+          <g transform={`translate(${margin.left},${margin.top})`}>
+            {this.state.bars.map((d, i) => {
+              return (
+                <Rect
+                  key={i}
+                  x={d.x}
+                  y={d.y}
+                  height={d.height}
+                  width={this.state.wScale.bandwidth()}
+                  fill={d.fill}
+                  yScale={this.state.yScale}
+                  onMouseOverCallback={this.onMouseOverCallback.bind(this, d)}
+                  onMouseOutCallback={this.onMouseOutCallback.bind(this, null)}
+                />
+              );
+            })}
+            <g ref="xAxis" transform={`translate(0, ${height})`} />
+            <g ref="yAxis" />
 
-          <text
-            className="BarChart-yLabel"
-            x={-(height / 2)}
-            y={-80}
-            transform="rotate(-90)"
-            textAnchor="middle"
-          >
-            {this.props.yLabel}
-          </text>
-        </g>
-      </svg>
+            <text
+              className="BarChart-yLabel"
+              x={-(height / 2)}
+              y={-80}
+              transform="rotate(-90)"
+              textAnchor="middle"
+            >
+              {this.props.yLabel}
+            </text>
+          </g>
+        </svg>
+        {this.state.hoveredBar ? (
+          <Tooltip
+            hoveredBar={this.state.hoveredBar}
+            xScale={this.state.xScale}
+            yScale={this.state.yScale}
+          />
+        ) : null}
+      </div>
     );
   }
 }

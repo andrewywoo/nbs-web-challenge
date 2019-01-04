@@ -24,6 +24,16 @@ class Rect extends Component {
     this.animateRect();
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return (
+      nextProps.x !== this.state.x ||
+      nextProps.y !== this.state.y ||
+      nextProps.width !== this.state.width ||
+      nextProps.height !== this.state.height ||
+      nextProps.fill !== this.state.fill
+    );
+  }
+
   animateRect() {
     const { y, height } = this.state;
 
@@ -51,7 +61,16 @@ class Rect extends Component {
     const { x, y, height, width, fill } = this.state;
 
     return (
-      <rect ref="rect" x={x} y={y} height={height} width={width} fill={fill} />
+      <rect
+        onMouseOver={this.props.onMouseOverCallback}
+        onMouseOut={this.props.onMouseOutCallback}
+        ref="rect"
+        x={x}
+        y={y}
+        height={height}
+        width={width}
+        fill={fill}
+      />
     );
   }
 }
