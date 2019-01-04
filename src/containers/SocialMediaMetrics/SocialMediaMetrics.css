@@ -35,6 +35,8 @@
 .SocialMediaMetrics__metrics-date-range {
   margin-top: 12px;
   font-size: 1.8em;
+  display: flex;
+  align-items: center;
 }
 
 .SocialMediaMetrics__metrics-range-slider {

@@ -2,14 +2,16 @@ import React from "react";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import BarChart from "../../components/BarChart/BarChart";
 import MetricViewBar from "../../components/MetricViewBar/MetricViewBar";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import Slider from "rc-slider";
-//import Range from "rc-slider/lib/Range";
 import moment from "moment";
 import "rc-slider/assets/index.css";
 import "./SocialMediaMetrics.css";
 
 const createSliderWithTooltip = Slider.createSliderWithTooltip;
 const Range = createSliderWithTooltip(Slider.Range);
+
 //get 5 years ago in unix time
 const startDateUnix = moment(new Date())
   .subtract(5, "y")
@@ -74,6 +76,11 @@ const socialMediaMetrics = props => {
           {moment.unix(props.startDate).format("MMM Do YYYY")}
           {"   -   "}
           {moment.unix(props.endDate).format("MMM Do YYYY")}
+          <FontAwesomeIcon
+            style={{ fontSize: "1.2rem", margin: "0 8px" }}
+            title="Use the range slider below to edit the date range."
+            icon={faInfoCircle}
+          />
         </span>
         <Range
           className="SocialMediaMetrics__metrics-range-slider"
