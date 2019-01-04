@@ -25,7 +25,8 @@ class App extends Component {
     endDate: moment(new Date()).unix(),
     trackDateRange: "TW",
     isLoaded: false,
-    isTrackMetricLoading: true
+    isTrackMetricLoading: true,
+    artistNotFound: false
   };
 
   constructor(props) {
@@ -91,11 +92,16 @@ class App extends Component {
     axios
       .get(`search/v1/artists/?query=${this.state.artist}&limit=1`)
       .then(response => {
-        if (!response.data.artists.length) return null;
+        if (!response.data.artists.length) {
+          this.setState({ artistNotFound: true });
+          return null;
+        }
 
         //When searching for new artist. Set is loaded to true. Add spinner bars for each section.
         this.setState({ isLoaded: true });
+        this.setState({ artistNotFound: false });
         this.resetArtistInfo();
+        window.scrollTo(0, 0);
 
         //Set state for artist info.
         const artistInfo = response.data.artists[0];
@@ -267,7 +273,8 @@ class App extends Component {
       isLoaded,
       startDate,
       endDate,
-      trackDateRange
+      trackDateRange,
+      artistNotFound
     } = this.state;
 
     return (
@@ -275,7 +282,9 @@ class App extends Component {
         <div className="App">
           <NavigationBar handleArtistChange={this.handleArtistChange} />
 
-          {isLoaded ? (
+          {artistNotFound ? (
+            <SplashPage>The artist was not found.</SplashPage>
+          ) : isLoaded ? (
             <>
               <ArtistInfo artistInfo={artistInfo} isLoaded={isLoaded} />
 
