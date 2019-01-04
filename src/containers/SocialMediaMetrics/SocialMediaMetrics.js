@@ -55,7 +55,6 @@ const socialMediaMetrics = props => {
     let cArr = chartTitle.split(" ");
     yLabel = cArr[cArr.length - 1];
 
-    console.log(data);
     //grab first date inside data.
     let chartStartDate = moment(data[0].date).unix();
 
