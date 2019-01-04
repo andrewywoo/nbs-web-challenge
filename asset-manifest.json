@@ -1,7 +1,7 @@
 {
   "main.css": "/nbs-web-challenge/static/css/main.5f9cc736.chunk.css",
-  "main.js": "/nbs-web-challenge/static/js/main.3f7a6858.chunk.js",
-  "main.js.map": "/nbs-web-challenge/static/js/main.3f7a6858.chunk.js.map",
+  "main.js": "/nbs-web-challenge/static/js/main.500818ac.chunk.js",
+  "main.js.map": "/nbs-web-challenge/static/js/main.500818ac.chunk.js.map",
   "static/css/1.9c1170bb.chunk.css": "/nbs-web-challenge/static/css/1.9c1170bb.chunk.css",
   "static/js/1.61bcd675.chunk.js": "/nbs-web-challenge/static/js/1.61bcd675.chunk.js",
   "static/js/1.61bcd675.chunk.js.map": "/nbs-web-challenge/static/js/1.61bcd675.chunk.js.map",
@@ -10,6 +10,6 @@
   "static/css/main.5f9cc736.chunk.css.map": "/nbs-web-challenge/static/css/main.5f9cc736.chunk.css.map",
   "static/css/1.9c1170bb.chunk.css.map": "/nbs-web-challenge/static/css/1.9c1170bb.chunk.css.map",
   "index.html": "/nbs-web-challenge/index.html",
-  "precache-manifest.904a33e4207d8d261cc989fc9bca022c.js": "/nbs-web-challenge/precache-manifest.904a33e4207d8d261cc989fc9bca022c.js",
+  "precache-manifest.8b57649bf0ac5b34747f770dfe9c34eb.js": "/nbs-web-challenge/precache-manifest.8b57649bf0ac5b34747f770dfe9c34eb.js",
   "service-worker.js": "/nbs-web-challenge/service-worker.js"
 }

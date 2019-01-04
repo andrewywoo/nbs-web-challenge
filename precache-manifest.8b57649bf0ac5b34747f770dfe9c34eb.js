@@ -1,11 +1,11 @@
 self.__precacheManifest = [
   {
-    "revision": "3f7a6858d69dccf87483",
+    "revision": "500818acfb24de7da5c9",
     "url": "/nbs-web-challenge/static/css/main.5f9cc736.chunk.css"
   },
   {
-    "revision": "3f7a6858d69dccf87483",
-    "url": "/nbs-web-challenge/static/js/main.3f7a6858.chunk.js"
+    "revision": "500818acfb24de7da5c9",
+    "url": "/nbs-web-challenge/static/js/main.500818ac.chunk.js"
   },
   {
     "revision": "61bcd67579bc69030a59",
@@ -20,7 +20,7 @@ self.__precacheManifest = [
     "url": "/nbs-web-challenge/static/js/runtime~main.5068634b.js"
   },
   {
-    "revision": "eb4670c6955bd117b99145a5a0d37957",
+    "revision": "fc21623f0e27209615c101fae8725de3",
     "url": "/nbs-web-challenge/index.html"
   }
 ];
