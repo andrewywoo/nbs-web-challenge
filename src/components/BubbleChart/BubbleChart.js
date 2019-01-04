@@ -95,10 +95,11 @@ class BubbleChart extends Component {
   renderCircles() {
     //console.log("renderCircles", this.state.circles);
 
-    var tooltip = d3
+    let tooltip = d3
       .select(this.refs.container)
       .append("div")
       .style("position", "absolute")
+      .style("text-align", "center")
       .style("z-index", "100")
       .style("visibility", "hidden")
       .style("border", "1px solid #fffff4")
@@ -106,6 +107,8 @@ class BubbleChart extends Component {
       .style("border-radius", "4px")
       .style("padding", "8px")
       .style("font-size", "1.5rem");
+
+    const formatCommas = d3.format(",");
 
     //JOIN
     this.node = d3
@@ -131,7 +134,10 @@ class BubbleChart extends Component {
       .attr("fill", d => this.state.cScale(d.name))
       .on("mouseover", function(d) {
         console.log(d);
-        return tooltip.text(d.name).style("visibility", "visible");
+        // return tooltip.text(d.name).style("visibility", "visible");
+        return tooltip
+          .html(`<p>${d.name}</p><p>${formatCommas(d.value)}</p>`)
+          .style("visibility", "visible");
       })
       .on("mousemove", function(d) {
         return tooltip.style("top", `${d.y}px`).style("left", `${d.x}px`);
@@ -155,8 +161,9 @@ class BubbleChart extends Component {
         return d.name.substring(0, this.state.rScale(d.value) / 3);
       })
       .on("mouseover", function(d) {
-        console.log(d);
-        return tooltip.text(d.name).style("visibility", "visible");
+        return tooltip
+          .html(`<p>${d.name}</p><p>${formatCommas(d.value)}</p>`)
+          .style("visibility", "visible");
       })
       .on("mousemove", function(d) {
         return tooltip.style("top", `${d.y}px`).style("left", `${d.x}px`);
@@ -174,10 +181,11 @@ class BubbleChart extends Component {
       .attr("dy", "1em")
       .attr("fill", "black")
       .attr("font-family", "'Pragati Narrow', sans-serif")
-      .text(d => d3.format(",")(d.value))
+      .text(d => formatCommas(d.value))
       .on("mouseover", function(d) {
-        console.log(d);
-        return tooltip.text(d.name).style("visibility", "visible");
+        return tooltip
+          .html(`<p>${d.name}</p><p>${formatCommas(d.value)}</p>`)
+          .style("visibility", "visible");
       })
       .on("mousemove", function(d) {
         return tooltip.style("top", `${d.y}px`).style("left", `${d.x}px`);

@@ -8,38 +8,32 @@ const trackViewBar = props => {
     margin: "0px 65px",
     padding: "0"
   };
-  return (
-    <div className="TrackViews">
-      {props.trackMetrics[410] ? (
-        <button onClick={props.handleTrackIdChange.bind(this, 410)}>
-          {props.metricMetadata[410].fullName}
+
+  let views = [410, 411, 413, 414];
+  let bar = null;
+
+  //map ids with buttons or spinner if data not loaded yet.
+  bar = views.map(id => {
+    return props.trackMetrics[id] ? (
+      //checking if button is the selected button.
+      id === props.trackMetricId ? (
+        <button
+          className="selected-button"
+          onClick={props.handleTrackIdChange.bind(this, id)}
+        >
+          {props.metricMetadata[id].fullName}
         </button>
       ) : (
-        <Spinner style={style} />
-      )}
-      {props.trackMetrics[411] ? (
-        <button onClick={props.handleTrackIdChange.bind(this, 411)}>
-          {props.metricMetadata[411].fullName}
+        <button onClick={props.handleTrackIdChange.bind(this, id)}>
+          {props.metricMetadata[id].fullName}
         </button>
-      ) : (
-        <Spinner style={style} />
-      )}
-      {props.trackMetrics[413] ? (
-        <button onClick={props.handleTrackIdChange.bind(this, 413)}>
-          {props.metricMetadata[413].fullName}
-        </button>
-      ) : (
-        <Spinner style={style} />
-      )}
-      {props.trackMetrics[414] ? (
-        <button onClick={props.handleTrackIdChange.bind(this, 414)}>
-          {props.metricMetadata[414].fullName}
-        </button>
-      ) : (
-        <Spinner style={style} />
-      )}
-    </div>
-  );
+      )
+    ) : (
+      <Spinner style={style} />
+    );
+  });
+
+  return <div className="TrackViews">{bar}</div>;
 };
 
 export default trackViewBar;

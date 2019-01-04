@@ -59,6 +59,7 @@ const socialMediaMetrics = props => {
           clicked={props.handleMetricIdChange}
           metricNames={metricNames}
           chartTitle={chartTitle}
+          metricId={props.metricId}
         />
         <h1 style={{ marginBottom: ".3em" }}>{chartTitle}</h1>
         <BarChart

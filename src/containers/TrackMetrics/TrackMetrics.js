@@ -36,6 +36,7 @@ const trackMetrics = props => {
       <>
         <TrackViewBar
           trackMetrics={props.trackMetrics}
+          trackMetricId={props.trackMetricId}
           handleTrackIdChange={props.handleTrackIdChange}
           metricMetadata={props.metricMetadata}
         />
@@ -47,6 +48,7 @@ const trackMetrics = props => {
               handleTrackDateRangeChange={props.handleTrackDateRangeChange}
               dateRangeDict={dateRangeDict}
               trackMetricId={props.trackMetricId}
+              trackDateRange={props.trackDateRange}
             />
           </div>
           <div>
